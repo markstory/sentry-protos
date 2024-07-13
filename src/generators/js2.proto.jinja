@@ -1,0 +1,64 @@
+{% macro render_prop(schema, prop_name, unpacked) %}
+{% if unpacked is an(NamedStructureType) %}
+{{ schema.name }}{{ caller() }}
+{% elif unpacked is an(ScalarType) %}
+{{ unpacked.proto_scalar_type }}{{ caller() }}
+{% elif unpacked is an(SumType) %}
+oneof {{ prop_name }} {
+{% for part in unpacked.parts %}
+{% filter indent(width=4, first=True) -%}
+{% set v = caller %}{% call render_prop(part, part.name, part.unpack()) %}{{ v() }}{% endcall %}
+{%- endfilter %}
+{% endfor %}
+}
+{% elif unpacked is an(NullableType) %}
+oneof has_{{ prop_name }} {
+{% filter indent(width=4, first=True) -%}
+{% set v = caller %}{% call render_prop(schema, prop_name, unpacked.inner) %}{{ v() }}{% endcall %}
+{%- endfilter %}
+}
+{% elif unpacked is an(RepeatedType) %}
+{% set v = caller %}repeated {% call render_prop(schema, prop_name, unpacked.inner) %}{{ v() }}{% endcall %}
+{% elif unpacked is an(MapType) %}
+{% set v = caller %}map<string, {% call render_prop(schema, prop_name, unpacked.inner) %}> {{ v() }}{% endcall %}
+{% endif  %}
+{% endmacro %}
+
+{% macro render_definition(schema, unpacked) %}
+{% set index = [] %}
+{% if unpacked is an(NamedStructureType) %}
+message {{ schema.name }} {
+{% filter indent(width=4, first=True) %}
+{% for k in unpacked.definition_dependencies  %}
+{{ render_definition(unpacked.properties[k], unpacked.properties[k].unpack()) -}}
+{% endfor %}
+{% for name, prop in unpacked.properties.items()  %}
+{% call render_prop(prop, name, prop.unpack()) %}{% do index.append(1) %} {{ name }} = {{ len(index) }};{% endcall %}
+{% endfor %}
+{% endfilter %}
+
+}
+
+{% elif unpacked is an(NullableType) %}
+{{- render_definition(schema, unpacked.inner)  -}}
+{% elif unpacked is an(ScalarType) %}
+{% elif unpacked is an(RepeatedType) %}
+{{- render_definition(schema, unpacked.inner) -}}
+{% elif unpacked is an(MapType) %}
+{{- render_definition(schema, unpacked.inner) -}}
+{% elif unpacked is an(SumType) %}
+{% for schema in unpacked.parts %}
+{{- render_definition(schema, schema.unpack()) -}}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+package {{ top_level.package_name }};
+
+{% for schema in top_level.schemas %}
+{{ render_definition(schema, schema.unpack()) }}
+{% endfor %}

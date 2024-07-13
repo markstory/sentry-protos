@@ -1,0 +1,2282 @@
+
+syntax = "proto3";
+
+package sentry_protos.relay.event;
+
+import "google/protobuf/struct.proto";
+
+message Event {
+  message Event_breadcrumbs {
+    message Event_breadcrumbs_values {
+      oneof has_category {
+        string category = 1;
+      }
+      oneof has_data {
+        google.protobuf.Value data = 2;
+      }
+      oneof has_event_id {
+        string event_id = 3;
+      }
+      oneof has_level {
+        string level = 4;
+      }
+      oneof has_message {
+        string message = 5;
+      }
+      oneof has_timestamp {
+        google.protobuf.Value timestamp = 6;
+      }
+      oneof has_type {
+        string type = 7;
+      }
+    }
+
+    repeated Event_breadcrumbs_values values = 1;
+  }
+
+  message Event_debug_meta {
+    message Event_debug_meta_sdk_info {
+      oneof has_sdk_name {
+        string sdk_name = 1;
+      }
+      oneof has_version_major {
+        uint64 version_major = 2;
+      }
+      oneof has_version_minor {
+        uint64 version_minor = 3;
+      }
+      oneof has_version_patchlevel {
+        uint64 version_patchlevel = 4;
+      }
+    }
+
+    repeated google.protobuf.Value images = 1;
+    oneof has_sdk_info {
+      Event_debug_meta_sdk_info sdk_info = 2;
+    }
+  }
+
+  message Event_errors {
+    oneof has_name {
+      string name = 1;
+    }
+    string type = 2;
+    google.protobuf.Value value = 3;
+  }
+
+  message Event_exception {
+    message Event_exception_values {
+      message Event_exception_values_mechanism {
+        message Event_exception_values_mechanism_meta {
+          message Event_exception_values_mechanism_meta_errno {
+            oneof has_name {
+              string name = 1;
+            }
+            oneof has_number {
+              int64 number = 2;
+            }
+          }
+
+          message Event_exception_values_mechanism_meta_mach_exception {
+            oneof has_code {
+              uint64 code = 1;
+            }
+            oneof has_exception {
+              int64 exception = 2;
+            }
+            oneof has_name {
+              string name = 3;
+            }
+            oneof has_subcode {
+              uint64 subcode = 4;
+            }
+          }
+
+          message Event_exception_values_mechanism_meta_ns_error {
+            oneof has_code {
+              int64 code = 1;
+            }
+            oneof has_domain {
+              string domain = 2;
+            }
+          }
+
+          message Event_exception_values_mechanism_meta_signal {
+            oneof has_code {
+              int64 code = 1;
+            }
+            oneof has_code_name {
+              string code_name = 2;
+            }
+            oneof has_name {
+              string name = 3;
+            }
+            oneof has_number {
+              int64 number = 4;
+            }
+          }
+
+          oneof has_errno {
+            Event_exception_values_mechanism_meta_errno errno = 1;
+          }
+          oneof has_mach_exception {
+            Event_exception_values_mechanism_meta_mach_exception mach_exception = 2;
+          }
+          oneof has_ns_error {
+            Event_exception_values_mechanism_meta_ns_error ns_error = 3;
+          }
+          oneof has_signal {
+            Event_exception_values_mechanism_meta_signal signal = 4;
+          }
+        }
+
+        oneof has_data {
+          google.protobuf.Value data = 1;
+        }
+        oneof has_description {
+          string description = 2;
+        }
+        oneof has_exception_id {
+          uint64 exception_id = 3;
+        }
+        oneof has_handled {
+          bool handled = 4;
+        }
+        oneof has_help_link {
+          string help_link = 5;
+        }
+        oneof has_is_exception_group {
+          bool is_exception_group = 6;
+        }
+        oneof has_meta {
+          Event_exception_values_mechanism_meta meta = 7;
+        }
+        oneof has_parent_id {
+          uint64 parent_id = 8;
+        }
+        oneof has_source {
+          string source = 9;
+        }
+        oneof has_synthetic {
+          bool synthetic = 10;
+        }
+        string type = 11;
+      }
+
+      message Event_exception_values_stacktrace {
+        message Event_exception_values_stacktrace_frames {
+          message Event_exception_values_stacktrace_frames_lock {
+            oneof has_address {
+              string address = 1;
+            }
+            oneof has_class_name {
+              string class_name = 2;
+            }
+            oneof has_package_name {
+              string package_name = 3;
+            }
+            oneof has_thread_id {
+              google.protobuf.Value thread_id = 4;
+            }
+            string type = 5;
+          }
+
+          oneof has_abs_path {
+            string abs_path = 1;
+          }
+          oneof has_addr_mode {
+            string addr_mode = 2;
+          }
+          oneof has_colno {
+            uint64 colno = 3;
+          }
+          oneof has_context_line {
+            string context_line = 4;
+          }
+          oneof has_filename {
+            string filename = 5;
+          }
+          oneof has_function {
+            string function = 6;
+          }
+          oneof has_function_id {
+            string function_id = 7;
+          }
+          oneof has_image_addr {
+            string image_addr = 8;
+          }
+          oneof has_in_app {
+            bool in_app = 9;
+          }
+          oneof has_instruction_addr {
+            string instruction_addr = 10;
+          }
+          oneof has_lineno {
+            uint64 lineno = 11;
+          }
+          oneof has_lock {
+            Event_exception_values_stacktrace_frames_lock lock = 12;
+          }
+          oneof has_module {
+            string module = 13;
+          }
+          oneof has_package {
+            string package = 14;
+          }
+          oneof has_platform {
+            string platform = 15;
+          }
+          repeated string post_context = 16;
+          repeated string pre_context = 17;
+          oneof has_raw_function {
+            string raw_function = 18;
+          }
+          oneof has_stack_start {
+            bool stack_start = 19;
+          }
+          oneof has_symbol {
+            string symbol = 20;
+          }
+          oneof has_symbol_addr {
+            string symbol_addr = 21;
+          }
+          oneof has_vars {
+            google.protobuf.Value vars = 22;
+          }
+        }
+
+        repeated Event_exception_values_stacktrace_frames frames = 1;
+        oneof has_instruction_addr_adjustment {
+          string instruction_addr_adjustment = 2;
+        }
+        oneof has_lang {
+          string lang = 3;
+        }
+        map<string, string> registers = 4;
+        oneof has_snapshot {
+          bool snapshot = 5;
+        }
+      }
+
+      oneof has_mechanism {
+        Event_exception_values_mechanism mechanism = 1;
+      }
+      oneof has_module {
+        string module = 2;
+      }
+      oneof has_stacktrace {
+        Event_exception_values_stacktrace stacktrace = 3;
+      }
+      oneof has_thread_id {
+        google.protobuf.Value thread_id = 4;
+      }
+      oneof has_type {
+        string type = 5;
+      }
+      oneof has_value {
+        string value = 6;
+      }
+    }
+
+    repeated Event_exception_values values = 1;
+  }
+
+  message Event_logentry {
+    oneof has_formatted {
+      string formatted = 1;
+    }
+    oneof has_message {
+      string message = 2;
+    }
+    google.protobuf.Value params = 3;
+  }
+
+  message Event_request {
+    oneof has_api_target {
+      string api_target = 1;
+    }
+    oneof has_body_size {
+      uint64 body_size = 2;
+    }
+    oneof has_cookies {
+      google.protobuf.Value cookies = 3;
+    }
+    google.protobuf.Value data = 4;
+    oneof has_env {
+      google.protobuf.Value env = 5;
+    }
+    oneof has_fragment {
+      string fragment = 6;
+    }
+    oneof has_headers {
+      google.protobuf.Value headers = 7;
+    }
+    oneof has_inferred_content_type {
+      string inferred_content_type = 8;
+    }
+    oneof has_method {
+      string method = 9;
+    }
+    oneof has_protocol {
+      string protocol = 10;
+    }
+    oneof has_query_string {
+      google.protobuf.Value query_string = 11;
+    }
+    oneof has_url {
+      string url = 12;
+    }
+  }
+
+  message Event_sdk {
+    message Event_sdk_packages {
+      oneof has_name {
+        string name = 1;
+      }
+      oneof has_version {
+        string version = 2;
+      }
+    }
+
+    repeated string integrations = 1;
+    string name = 2;
+    repeated Event_sdk_packages packages = 3;
+    string version = 4;
+  }
+
+  message Event_stacktrace {
+    message Event_stacktrace_frames {
+      message Event_stacktrace_frames_lock {
+        oneof has_address {
+          string address = 1;
+        }
+        oneof has_class_name {
+          string class_name = 2;
+        }
+        oneof has_package_name {
+          string package_name = 3;
+        }
+        oneof has_thread_id {
+          google.protobuf.Value thread_id = 4;
+        }
+        string type = 5;
+      }
+
+      oneof has_abs_path {
+        string abs_path = 1;
+      }
+      oneof has_addr_mode {
+        string addr_mode = 2;
+      }
+      oneof has_colno {
+        uint64 colno = 3;
+      }
+      oneof has_context_line {
+        string context_line = 4;
+      }
+      oneof has_filename {
+        string filename = 5;
+      }
+      oneof has_function {
+        string function = 6;
+      }
+      oneof has_function_id {
+        string function_id = 7;
+      }
+      oneof has_image_addr {
+        string image_addr = 8;
+      }
+      oneof has_in_app {
+        bool in_app = 9;
+      }
+      oneof has_instruction_addr {
+        string instruction_addr = 10;
+      }
+      oneof has_lineno {
+        uint64 lineno = 11;
+      }
+      oneof has_lock {
+        Event_stacktrace_frames_lock lock = 12;
+      }
+      oneof has_module {
+        string module = 13;
+      }
+      oneof has_package {
+        string package = 14;
+      }
+      oneof has_platform {
+        string platform = 15;
+      }
+      repeated string post_context = 16;
+      repeated string pre_context = 17;
+      oneof has_raw_function {
+        string raw_function = 18;
+      }
+      oneof has_stack_start {
+        bool stack_start = 19;
+      }
+      oneof has_symbol {
+        string symbol = 20;
+      }
+      oneof has_symbol_addr {
+        string symbol_addr = 21;
+      }
+      oneof has_vars {
+        google.protobuf.Value vars = 22;
+      }
+    }
+
+    repeated Event_stacktrace_frames frames = 1;
+    oneof has_instruction_addr_adjustment {
+      string instruction_addr_adjustment = 2;
+    }
+    oneof has_lang {
+      string lang = 3;
+    }
+    map<string, string> registers = 4;
+    oneof has_snapshot {
+      bool snapshot = 5;
+    }
+  }
+
+  message Event_threads {
+    message Event_threads_values {
+      message Event_threads_values_held_locks {
+        oneof has_address {
+          string address = 1;
+        }
+        oneof has_class_name {
+          string class_name = 2;
+        }
+        oneof has_package_name {
+          string package_name = 3;
+        }
+        oneof has_thread_id {
+          google.protobuf.Value thread_id = 4;
+        }
+        string type = 5;
+      }
+
+      message Event_threads_values_stacktrace {
+        message Event_threads_values_stacktrace_frames {
+          message Event_threads_values_stacktrace_frames_lock {
+            oneof has_address {
+              string address = 1;
+            }
+            oneof has_class_name {
+              string class_name = 2;
+            }
+            oneof has_package_name {
+              string package_name = 3;
+            }
+            oneof has_thread_id {
+              google.protobuf.Value thread_id = 4;
+            }
+            string type = 5;
+          }
+
+          oneof has_abs_path {
+            string abs_path = 1;
+          }
+          oneof has_addr_mode {
+            string addr_mode = 2;
+          }
+          oneof has_colno {
+            uint64 colno = 3;
+          }
+          oneof has_context_line {
+            string context_line = 4;
+          }
+          oneof has_filename {
+            string filename = 5;
+          }
+          oneof has_function {
+            string function = 6;
+          }
+          oneof has_function_id {
+            string function_id = 7;
+          }
+          oneof has_image_addr {
+            string image_addr = 8;
+          }
+          oneof has_in_app {
+            bool in_app = 9;
+          }
+          oneof has_instruction_addr {
+            string instruction_addr = 10;
+          }
+          oneof has_lineno {
+            uint64 lineno = 11;
+          }
+          oneof has_lock {
+            Event_threads_values_stacktrace_frames_lock lock = 12;
+          }
+          oneof has_module {
+            string module = 13;
+          }
+          oneof has_package {
+            string package = 14;
+          }
+          oneof has_platform {
+            string platform = 15;
+          }
+          repeated string post_context = 16;
+          repeated string pre_context = 17;
+          oneof has_raw_function {
+            string raw_function = 18;
+          }
+          oneof has_stack_start {
+            bool stack_start = 19;
+          }
+          oneof has_symbol {
+            string symbol = 20;
+          }
+          oneof has_symbol_addr {
+            string symbol_addr = 21;
+          }
+          oneof has_vars {
+            google.protobuf.Value vars = 22;
+          }
+        }
+
+        repeated Event_threads_values_stacktrace_frames frames = 1;
+        oneof has_instruction_addr_adjustment {
+          string instruction_addr_adjustment = 2;
+        }
+        oneof has_lang {
+          string lang = 3;
+        }
+        map<string, string> registers = 4;
+        oneof has_snapshot {
+          bool snapshot = 5;
+        }
+      }
+
+      oneof has_crashed {
+        bool crashed = 1;
+      }
+      oneof has_current {
+        bool current = 2;
+      }
+      map<string, Event_threads_values_held_locks> held_locks = 3;
+      oneof has_id {
+        google.protobuf.Value id = 4;
+      }
+      oneof has_main {
+        bool main = 5;
+      }
+      oneof has_name {
+        string name = 6;
+      }
+      oneof has_stacktrace {
+        Event_threads_values_stacktrace stacktrace = 7;
+      }
+      oneof has_state {
+        string state = 8;
+      }
+    }
+
+    repeated Event_threads_values values = 1;
+  }
+
+  message Event_transaction_info {
+    message Event_transaction_info_changes {
+      oneof has_propagations {
+        uint64 propagations = 1;
+      }
+      oneof has_source {
+        string source = 2;
+      }
+      oneof has_timestamp {
+        google.protobuf.Value timestamp = 3;
+      }
+    }
+
+    repeated Event_transaction_info_changes changes = 1;
+    oneof has_original {
+      string original = 2;
+    }
+    oneof has_propagations {
+      uint64 propagations = 3;
+    }
+    oneof has_source {
+      string source = 4;
+    }
+  }
+
+  message Event_user {
+    message Event_user_geo {
+      oneof has_city {
+        string city = 1;
+      }
+      oneof has_country_code {
+        string country_code = 2;
+      }
+      oneof has_region {
+        string region = 3;
+      }
+      oneof has_subdivision {
+        string subdivision = 4;
+      }
+    }
+
+    oneof has_data {
+      google.protobuf.Value data = 1;
+    }
+    oneof has_email {
+      string email = 2;
+    }
+    oneof has_geo {
+      Event_user_geo geo = 3;
+    }
+    oneof has_id {
+      string id = 4;
+    }
+    oneof has_ip_address {
+      string ip_address = 5;
+    }
+    oneof has_name {
+      string name = 6;
+    }
+    oneof has_segment {
+      string segment = 7;
+    }
+    oneof has_sentry_user {
+      string sentry_user = 8;
+    }
+    oneof has_username {
+      string username = 9;
+    }
+  }
+
+  oneof has_breadcrumbs {
+    Event_breadcrumbs breadcrumbs = 1;
+  }
+  map<string, google.protobuf.Value> contexts = 2;
+  oneof has_culprit {
+    string culprit = 3;
+  }
+  oneof has_debug_meta {
+    Event_debug_meta debug_meta = 4;
+  }
+  oneof has_dist {
+    string dist = 5;
+  }
+  oneof has_environment {
+    string environment = 6;
+  }
+  repeated Event_errors errors = 7;
+  oneof has_event_id {
+    string event_id = 8;
+  }
+  oneof has_exception {
+    Event_exception exception = 9;
+  }
+  oneof has_extra {
+    google.protobuf.Value extra = 10;
+  }
+  repeated string fingerprint = 11;
+  oneof has_level {
+    string level = 12;
+  }
+  oneof has_logentry {
+    Event_logentry logentry = 13;
+  }
+  oneof has_logger {
+    string logger = 14;
+  }
+  map<string, string> modules = 15;
+  oneof has_platform {
+    string platform = 16;
+  }
+  oneof has_received {
+    google.protobuf.Value received = 17;
+  }
+  oneof has_release {
+    string release = 18;
+  }
+  oneof has_request {
+    Event_request request = 19;
+  }
+  oneof has_sdk {
+    Event_sdk sdk = 20;
+  }
+  oneof has_server_name {
+    string server_name = 21;
+  }
+  oneof has_stacktrace {
+    Event_stacktrace stacktrace = 22;
+  }
+  oneof has_tags {
+    google.protobuf.Value tags = 23;
+  }
+  oneof has_threads {
+    Event_threads threads = 24;
+  }
+  oneof has_time_spent {
+    uint64 time_spent = 25;
+  }
+  oneof has_timestamp {
+    google.protobuf.Value timestamp = 26;
+  }
+  oneof has_transaction {
+    string transaction = 27;
+  }
+  oneof has_transaction_info {
+    Event_transaction_info transaction_info = 28;
+  }
+  oneof has_type {
+    string type = 29;
+  }
+  oneof has_user {
+    Event_user user = 30;
+  }
+  oneof has_version {
+    string version = 31;
+  }
+}
+
+message AppContext {
+  oneof has_app_build {
+    string app_build = 1;
+  }
+  oneof has_app_identifier {
+    string app_identifier = 2;
+  }
+  oneof has_app_memory {
+    uint64 app_memory = 3;
+  }
+  oneof has_app_name {
+    string app_name = 4;
+  }
+  oneof has_app_start_time {
+    string app_start_time = 5;
+  }
+  oneof has_app_version {
+    string app_version = 6;
+  }
+  oneof has_build_type {
+    string build_type = 7;
+  }
+  oneof has_device_app_hash {
+    string device_app_hash = 8;
+  }
+  oneof has_in_foreground {
+    bool in_foreground = 9;
+  }
+  repeated string view_names = 10;
+}
+
+message AppleDebugImage {
+  oneof has_arch {
+    string arch = 1;
+  }
+  oneof has_cpu_subtype {
+    uint64 cpu_subtype = 2;
+  }
+  oneof has_cpu_type {
+    uint64 cpu_type = 3;
+  }
+  string image_addr = 4;
+  uint64 image_size = 5;
+  oneof has_image_vmaddr {
+    string image_vmaddr = 6;
+  }
+  string name = 7;
+  string uuid = 8;
+}
+
+message Breadcrumb {
+  oneof has_category {
+    string category = 1;
+  }
+  oneof has_data {
+    google.protobuf.Value data = 2;
+  }
+  oneof has_event_id {
+    string event_id = 3;
+  }
+  oneof has_level {
+    string level = 4;
+  }
+  oneof has_message {
+    string message = 5;
+  }
+  oneof has_timestamp {
+    google.protobuf.Value timestamp = 6;
+  }
+  oneof has_type {
+    string type = 7;
+  }
+}
+
+message BrowserContext {
+  oneof has_name {
+    string name = 1;
+  }
+  oneof has_version {
+    string version = 2;
+  }
+}
+
+message CError {
+  oneof has_name {
+    string name = 1;
+  }
+  oneof has_number {
+    int64 number = 2;
+  }
+}
+
+message ClientSdkInfo {
+  message ClientSdkInfo_packages {
+    oneof has_name {
+      string name = 1;
+    }
+    oneof has_version {
+      string version = 2;
+    }
+  }
+
+  repeated string integrations = 1;
+  string name = 2;
+  repeated ClientSdkInfo_packages packages = 3;
+  string version = 4;
+}
+
+message ClientSdkPackage {
+  oneof has_name {
+    string name = 1;
+  }
+  oneof has_version {
+    string version = 2;
+  }
+}
+
+message Data {
+  message Data_previousRoute {
+    oneof has_name {
+      string name = 1;
+    }
+    oneof has_params {
+      google.protobuf.Value params = 2;
+    }
+  }
+
+  message Data_route {
+    oneof has_name {
+      string name = 1;
+    }
+    oneof has_params {
+      google.protobuf.Value params = 2;
+    }
+  }
+
+  oneof has_previousRoute {
+    Data_previousRoute previousRoute = 1;
+  }
+  oneof has_route {
+    Data_route route = 2;
+  }
+}
+
+message DebugMeta {
+  message DebugMeta_sdk_info {
+    oneof has_sdk_name {
+      string sdk_name = 1;
+    }
+    oneof has_version_major {
+      uint64 version_major = 2;
+    }
+    oneof has_version_minor {
+      uint64 version_minor = 3;
+    }
+    oneof has_version_patchlevel {
+      uint64 version_patchlevel = 4;
+    }
+  }
+
+  repeated google.protobuf.Value images = 1;
+  oneof has_sdk_info {
+    DebugMeta_sdk_info sdk_info = 2;
+  }
+}
+
+message DeviceContext {
+  oneof has_arch {
+    string arch = 1;
+  }
+  oneof has_battery_level {
+    double battery_level = 2;
+  }
+  oneof has_battery_status {
+    string battery_status = 3;
+  }
+  oneof has_boot_time {
+    string boot_time = 4;
+  }
+  oneof has_brand {
+    string brand = 5;
+  }
+  oneof has_charging {
+    bool charging = 6;
+  }
+  oneof has_cpu_description {
+    string cpu_description = 7;
+  }
+  oneof has_device_type {
+    string device_type = 8;
+  }
+  oneof has_device_unique_identifier {
+    string device_unique_identifier = 9;
+  }
+  oneof has_external_free_storage {
+    uint64 external_free_storage = 10;
+  }
+  oneof has_external_storage_size {
+    uint64 external_storage_size = 11;
+  }
+  oneof has_family {
+    string family = 12;
+  }
+  oneof has_free_memory {
+    uint64 free_memory = 13;
+  }
+  oneof has_free_storage {
+    uint64 free_storage = 14;
+  }
+  oneof has_locale {
+    string locale = 15;
+  }
+  oneof has_low_memory {
+    bool low_memory = 16;
+  }
+  oneof has_manufacturer {
+    string manufacturer = 17;
+  }
+  oneof has_memory_size {
+    uint64 memory_size = 18;
+  }
+  oneof has_model {
+    string model = 19;
+  }
+  oneof has_model_id {
+    string model_id = 20;
+  }
+  oneof has_name {
+    string name = 21;
+  }
+  oneof has_online {
+    bool online = 22;
+  }
+  oneof has_orientation {
+    string orientation = 23;
+  }
+  oneof has_processor_count {
+    uint64 processor_count = 24;
+  }
+  oneof has_processor_frequency {
+    uint64 processor_frequency = 25;
+  }
+  oneof has_screen_density {
+    double screen_density = 26;
+  }
+  oneof has_screen_dpi {
+    uint64 screen_dpi = 27;
+  }
+  oneof has_screen_height_pixels {
+    uint64 screen_height_pixels = 28;
+  }
+  oneof has_screen_resolution {
+    string screen_resolution = 29;
+  }
+  oneof has_screen_width_pixels {
+    uint64 screen_width_pixels = 30;
+  }
+  oneof has_simulator {
+    bool simulator = 31;
+  }
+  oneof has_storage_size {
+    uint64 storage_size = 32;
+  }
+  oneof has_supports_accelerometer {
+    bool supports_accelerometer = 33;
+  }
+  oneof has_supports_audio {
+    bool supports_audio = 34;
+  }
+  oneof has_supports_gyroscope {
+    bool supports_gyroscope = 35;
+  }
+  oneof has_supports_location_service {
+    bool supports_location_service = 36;
+  }
+  oneof has_supports_vibration {
+    bool supports_vibration = 37;
+  }
+  oneof has_timezone {
+    string timezone = 38;
+  }
+  oneof has_usable_memory {
+    uint64 usable_memory = 39;
+  }
+  oneof has_uuid {
+    string uuid = 40;
+  }
+}
+
+message EventProcessingError {
+  oneof has_name {
+    string name = 1;
+  }
+  string type = 2;
+  google.protobuf.Value value = 3;
+}
+
+message Exception {
+  message Exception_mechanism {
+    message Exception_mechanism_meta {
+      message Exception_mechanism_meta_errno {
+        oneof has_name {
+          string name = 1;
+        }
+        oneof has_number {
+          int64 number = 2;
+        }
+      }
+
+      message Exception_mechanism_meta_mach_exception {
+        oneof has_code {
+          uint64 code = 1;
+        }
+        oneof has_exception {
+          int64 exception = 2;
+        }
+        oneof has_name {
+          string name = 3;
+        }
+        oneof has_subcode {
+          uint64 subcode = 4;
+        }
+      }
+
+      message Exception_mechanism_meta_ns_error {
+        oneof has_code {
+          int64 code = 1;
+        }
+        oneof has_domain {
+          string domain = 2;
+        }
+      }
+
+      message Exception_mechanism_meta_signal {
+        oneof has_code {
+          int64 code = 1;
+        }
+        oneof has_code_name {
+          string code_name = 2;
+        }
+        oneof has_name {
+          string name = 3;
+        }
+        oneof has_number {
+          int64 number = 4;
+        }
+      }
+
+      oneof has_errno {
+        Exception_mechanism_meta_errno errno = 1;
+      }
+      oneof has_mach_exception {
+        Exception_mechanism_meta_mach_exception mach_exception = 2;
+      }
+      oneof has_ns_error {
+        Exception_mechanism_meta_ns_error ns_error = 3;
+      }
+      oneof has_signal {
+        Exception_mechanism_meta_signal signal = 4;
+      }
+    }
+
+    oneof has_data {
+      google.protobuf.Value data = 1;
+    }
+    oneof has_description {
+      string description = 2;
+    }
+    oneof has_exception_id {
+      uint64 exception_id = 3;
+    }
+    oneof has_handled {
+      bool handled = 4;
+    }
+    oneof has_help_link {
+      string help_link = 5;
+    }
+    oneof has_is_exception_group {
+      bool is_exception_group = 6;
+    }
+    oneof has_meta {
+      Exception_mechanism_meta meta = 7;
+    }
+    oneof has_parent_id {
+      uint64 parent_id = 8;
+    }
+    oneof has_source {
+      string source = 9;
+    }
+    oneof has_synthetic {
+      bool synthetic = 10;
+    }
+    string type = 11;
+  }
+
+  message Exception_stacktrace {
+    message Exception_stacktrace_frames {
+      message Exception_stacktrace_frames_lock {
+        oneof has_address {
+          string address = 1;
+        }
+        oneof has_class_name {
+          string class_name = 2;
+        }
+        oneof has_package_name {
+          string package_name = 3;
+        }
+        oneof has_thread_id {
+          google.protobuf.Value thread_id = 4;
+        }
+        string type = 5;
+      }
+
+      oneof has_abs_path {
+        string abs_path = 1;
+      }
+      oneof has_addr_mode {
+        string addr_mode = 2;
+      }
+      oneof has_colno {
+        uint64 colno = 3;
+      }
+      oneof has_context_line {
+        string context_line = 4;
+      }
+      oneof has_filename {
+        string filename = 5;
+      }
+      oneof has_function {
+        string function = 6;
+      }
+      oneof has_function_id {
+        string function_id = 7;
+      }
+      oneof has_image_addr {
+        string image_addr = 8;
+      }
+      oneof has_in_app {
+        bool in_app = 9;
+      }
+      oneof has_instruction_addr {
+        string instruction_addr = 10;
+      }
+      oneof has_lineno {
+        uint64 lineno = 11;
+      }
+      oneof has_lock {
+        Exception_stacktrace_frames_lock lock = 12;
+      }
+      oneof has_module {
+        string module = 13;
+      }
+      oneof has_package {
+        string package = 14;
+      }
+      oneof has_platform {
+        string platform = 15;
+      }
+      repeated string post_context = 16;
+      repeated string pre_context = 17;
+      oneof has_raw_function {
+        string raw_function = 18;
+      }
+      oneof has_stack_start {
+        bool stack_start = 19;
+      }
+      oneof has_symbol {
+        string symbol = 20;
+      }
+      oneof has_symbol_addr {
+        string symbol_addr = 21;
+      }
+      oneof has_vars {
+        google.protobuf.Value vars = 22;
+      }
+    }
+
+    repeated Exception_stacktrace_frames frames = 1;
+    oneof has_instruction_addr_adjustment {
+      string instruction_addr_adjustment = 2;
+    }
+    oneof has_lang {
+      string lang = 3;
+    }
+    map<string, string> registers = 4;
+    oneof has_snapshot {
+      bool snapshot = 5;
+    }
+  }
+
+  oneof has_mechanism {
+    Exception_mechanism mechanism = 1;
+  }
+  oneof has_module {
+    string module = 2;
+  }
+  oneof has_stacktrace {
+    Exception_stacktrace stacktrace = 3;
+  }
+  oneof has_thread_id {
+    google.protobuf.Value thread_id = 4;
+  }
+  oneof has_type {
+    string type = 5;
+  }
+  oneof has_value {
+    string value = 6;
+  }
+}
+
+message Frame {
+  message Frame_lock {
+    oneof has_address {
+      string address = 1;
+    }
+    oneof has_class_name {
+      string class_name = 2;
+    }
+    oneof has_package_name {
+      string package_name = 3;
+    }
+    oneof has_thread_id {
+      google.protobuf.Value thread_id = 4;
+    }
+    string type = 5;
+  }
+
+  oneof has_abs_path {
+    string abs_path = 1;
+  }
+  oneof has_addr_mode {
+    string addr_mode = 2;
+  }
+  oneof has_colno {
+    uint64 colno = 3;
+  }
+  oneof has_context_line {
+    string context_line = 4;
+  }
+  oneof has_filename {
+    string filename = 5;
+  }
+  oneof has_function {
+    string function = 6;
+  }
+  oneof has_function_id {
+    string function_id = 7;
+  }
+  oneof has_image_addr {
+    string image_addr = 8;
+  }
+  oneof has_in_app {
+    bool in_app = 9;
+  }
+  oneof has_instruction_addr {
+    string instruction_addr = 10;
+  }
+  oneof has_lineno {
+    uint64 lineno = 11;
+  }
+  oneof has_lock {
+    Frame_lock lock = 12;
+  }
+  oneof has_module {
+    string module = 13;
+  }
+  oneof has_package {
+    string package = 14;
+  }
+  oneof has_platform {
+    string platform = 15;
+  }
+  repeated string post_context = 16;
+  repeated string pre_context = 17;
+  oneof has_raw_function {
+    string raw_function = 18;
+  }
+  oneof has_stack_start {
+    bool stack_start = 19;
+  }
+  oneof has_symbol {
+    string symbol = 20;
+  }
+  oneof has_symbol_addr {
+    string symbol_addr = 21;
+  }
+  oneof has_vars {
+    google.protobuf.Value vars = 22;
+  }
+}
+
+message Geo {
+  oneof has_city {
+    string city = 1;
+  }
+  oneof has_country_code {
+    string country_code = 2;
+  }
+  oneof has_region {
+    string region = 3;
+  }
+  oneof has_subdivision {
+    string subdivision = 4;
+  }
+}
+
+message GpuContext {
+  oneof has_api_type {
+    string api_type = 1;
+  }
+  oneof has_graphics_shader_level {
+    string graphics_shader_level = 2;
+  }
+  google.protobuf.Value id = 3;
+  oneof has_max_texture_size {
+    uint64 max_texture_size = 4;
+  }
+  oneof has_memory_size {
+    uint64 memory_size = 5;
+  }
+  oneof has_multi_threaded_rendering {
+    bool multi_threaded_rendering = 6;
+  }
+  oneof has_name {
+    string name = 7;
+  }
+  oneof has_npot_support {
+    string npot_support = 8;
+  }
+  oneof has_supports_compute_shaders {
+    bool supports_compute_shaders = 9;
+  }
+  oneof has_supports_draw_call_instancing {
+    bool supports_draw_call_instancing = 10;
+  }
+  oneof has_supports_geometry_shaders {
+    bool supports_geometry_shaders = 11;
+  }
+  oneof has_supports_ray_tracing {
+    bool supports_ray_tracing = 12;
+  }
+  oneof has_vendor_id {
+    string vendor_id = 13;
+  }
+  oneof has_vendor_name {
+    string vendor_name = 14;
+  }
+  oneof has_version {
+    string version = 15;
+  }
+}
+
+message JvmDebugImage {
+  string debug_id = 1;
+}
+
+message LockReason {
+  oneof has_address {
+    string address = 1;
+  }
+  oneof has_class_name {
+    string class_name = 2;
+  }
+  oneof has_package_name {
+    string package_name = 3;
+  }
+  oneof has_thread_id {
+    google.protobuf.Value thread_id = 4;
+  }
+  string type = 5;
+}
+
+message LogEntry {
+  oneof has_formatted {
+    string formatted = 1;
+  }
+  oneof has_message {
+    string message = 2;
+  }
+  google.protobuf.Value params = 3;
+}
+
+message MachException {
+  oneof has_code {
+    uint64 code = 1;
+  }
+  oneof has_exception {
+    int64 exception = 2;
+  }
+  oneof has_name {
+    string name = 3;
+  }
+  oneof has_subcode {
+    uint64 subcode = 4;
+  }
+}
+
+message Mechanism {
+  message Mechanism_meta {
+    message Mechanism_meta_errno {
+      oneof has_name {
+        string name = 1;
+      }
+      oneof has_number {
+        int64 number = 2;
+      }
+    }
+
+    message Mechanism_meta_mach_exception {
+      oneof has_code {
+        uint64 code = 1;
+      }
+      oneof has_exception {
+        int64 exception = 2;
+      }
+      oneof has_name {
+        string name = 3;
+      }
+      oneof has_subcode {
+        uint64 subcode = 4;
+      }
+    }
+
+    message Mechanism_meta_ns_error {
+      oneof has_code {
+        int64 code = 1;
+      }
+      oneof has_domain {
+        string domain = 2;
+      }
+    }
+
+    message Mechanism_meta_signal {
+      oneof has_code {
+        int64 code = 1;
+      }
+      oneof has_code_name {
+        string code_name = 2;
+      }
+      oneof has_name {
+        string name = 3;
+      }
+      oneof has_number {
+        int64 number = 4;
+      }
+    }
+
+    oneof has_errno {
+      Mechanism_meta_errno errno = 1;
+    }
+    oneof has_mach_exception {
+      Mechanism_meta_mach_exception mach_exception = 2;
+    }
+    oneof has_ns_error {
+      Mechanism_meta_ns_error ns_error = 3;
+    }
+    oneof has_signal {
+      Mechanism_meta_signal signal = 4;
+    }
+  }
+
+  oneof has_data {
+    google.protobuf.Value data = 1;
+  }
+  oneof has_description {
+    string description = 2;
+  }
+  oneof has_exception_id {
+    uint64 exception_id = 3;
+  }
+  oneof has_handled {
+    bool handled = 4;
+  }
+  oneof has_help_link {
+    string help_link = 5;
+  }
+  oneof has_is_exception_group {
+    bool is_exception_group = 6;
+  }
+  oneof has_meta {
+    Mechanism_meta meta = 7;
+  }
+  oneof has_parent_id {
+    uint64 parent_id = 8;
+  }
+  oneof has_source {
+    string source = 9;
+  }
+  oneof has_synthetic {
+    bool synthetic = 10;
+  }
+  string type = 11;
+}
+
+message MechanismMeta {
+  message MechanismMeta_errno {
+    oneof has_name {
+      string name = 1;
+    }
+    oneof has_number {
+      int64 number = 2;
+    }
+  }
+
+  message MechanismMeta_mach_exception {
+    oneof has_code {
+      uint64 code = 1;
+    }
+    oneof has_exception {
+      int64 exception = 2;
+    }
+    oneof has_name {
+      string name = 3;
+    }
+    oneof has_subcode {
+      uint64 subcode = 4;
+    }
+  }
+
+  message MechanismMeta_ns_error {
+    oneof has_code {
+      int64 code = 1;
+    }
+    oneof has_domain {
+      string domain = 2;
+    }
+  }
+
+  message MechanismMeta_signal {
+    oneof has_code {
+      int64 code = 1;
+    }
+    oneof has_code_name {
+      string code_name = 2;
+    }
+    oneof has_name {
+      string name = 3;
+    }
+    oneof has_number {
+      int64 number = 4;
+    }
+  }
+
+  oneof has_errno {
+    MechanismMeta_errno errno = 1;
+  }
+  oneof has_mach_exception {
+    MechanismMeta_mach_exception mach_exception = 2;
+  }
+  oneof has_ns_error {
+    MechanismMeta_ns_error ns_error = 3;
+  }
+  oneof has_signal {
+    MechanismMeta_signal signal = 4;
+  }
+}
+
+message NativeDebugImage {
+  oneof has_arch {
+    string arch = 1;
+  }
+  string code_file = 2;
+  oneof has_code_id {
+    string code_id = 3;
+  }
+  oneof has_debug_checksum {
+    string debug_checksum = 4;
+  }
+  oneof has_debug_file {
+    string debug_file = 5;
+  }
+  string debug_id = 6;
+  oneof has_image_addr {
+    string image_addr = 7;
+  }
+  oneof has_image_size {
+    uint64 image_size = 8;
+  }
+  oneof has_image_vmaddr {
+    string image_vmaddr = 9;
+  }
+}
+
+message NelContext {
+  oneof has_elapsed_time {
+    uint64 elapsed_time = 1;
+  }
+  oneof has_error_type {
+    string error_type = 2;
+  }
+  oneof has_phase {
+    google.protobuf.Value phase = 3;
+  }
+  oneof has_sampling_fraction {
+    double sampling_fraction = 4;
+  }
+  oneof has_server_ip {
+    string server_ip = 5;
+  }
+}
+
+message NsError {
+  oneof has_code {
+    int64 code = 1;
+  }
+  oneof has_domain {
+    string domain = 2;
+  }
+}
+
+message OsContext {
+  oneof has_build {
+    string build = 1;
+  }
+  oneof has_kernel_version {
+    string kernel_version = 2;
+  }
+  oneof has_name {
+    string name = 3;
+  }
+  oneof has_raw_description {
+    string raw_description = 4;
+  }
+  oneof has_rooted {
+    bool rooted = 5;
+  }
+  oneof has_version {
+    string version = 6;
+  }
+}
+
+message OtelContext {
+  oneof has_attributes {
+    google.protobuf.Value attributes = 1;
+  }
+  oneof has_resource {
+    google.protobuf.Value resource = 2;
+  }
+}
+
+message PosixSignal {
+  oneof has_code {
+    int64 code = 1;
+  }
+  oneof has_code_name {
+    string code_name = 2;
+  }
+  oneof has_name {
+    string name = 3;
+  }
+  oneof has_number {
+    int64 number = 4;
+  }
+}
+
+message ProfileContext {
+  string profile_id = 1;
+}
+
+message ProguardDebugImage {
+  string uuid = 1;
+}
+
+message RawStacktrace {
+  message RawStacktrace_frames {
+    message RawStacktrace_frames_lock {
+      oneof has_address {
+        string address = 1;
+      }
+      oneof has_class_name {
+        string class_name = 2;
+      }
+      oneof has_package_name {
+        string package_name = 3;
+      }
+      oneof has_thread_id {
+        google.protobuf.Value thread_id = 4;
+      }
+      string type = 5;
+    }
+
+    oneof has_abs_path {
+      string abs_path = 1;
+    }
+    oneof has_addr_mode {
+      string addr_mode = 2;
+    }
+    oneof has_colno {
+      uint64 colno = 3;
+    }
+    oneof has_context_line {
+      string context_line = 4;
+    }
+    oneof has_filename {
+      string filename = 5;
+    }
+    oneof has_function {
+      string function = 6;
+    }
+    oneof has_function_id {
+      string function_id = 7;
+    }
+    oneof has_image_addr {
+      string image_addr = 8;
+    }
+    oneof has_in_app {
+      bool in_app = 9;
+    }
+    oneof has_instruction_addr {
+      string instruction_addr = 10;
+    }
+    oneof has_lineno {
+      uint64 lineno = 11;
+    }
+    oneof has_lock {
+      RawStacktrace_frames_lock lock = 12;
+    }
+    oneof has_module {
+      string module = 13;
+    }
+    oneof has_package {
+      string package = 14;
+    }
+    oneof has_platform {
+      string platform = 15;
+    }
+    repeated string post_context = 16;
+    repeated string pre_context = 17;
+    oneof has_raw_function {
+      string raw_function = 18;
+    }
+    oneof has_stack_start {
+      bool stack_start = 19;
+    }
+    oneof has_symbol {
+      string symbol = 20;
+    }
+    oneof has_symbol_addr {
+      string symbol_addr = 21;
+    }
+    oneof has_vars {
+      google.protobuf.Value vars = 22;
+    }
+  }
+
+  repeated RawStacktrace_frames frames = 1;
+  oneof has_instruction_addr_adjustment {
+    string instruction_addr_adjustment = 2;
+  }
+  oneof has_lang {
+    string lang = 3;
+  }
+  map<string, string> registers = 4;
+  oneof has_snapshot {
+    bool snapshot = 5;
+  }
+}
+
+message ReplayContext {
+  oneof has_replay_id {
+    string replay_id = 1;
+  }
+}
+
+message Request {
+  oneof has_api_target {
+    string api_target = 1;
+  }
+  oneof has_body_size {
+    uint64 body_size = 2;
+  }
+  oneof has_cookies {
+    google.protobuf.Value cookies = 3;
+  }
+  google.protobuf.Value data = 4;
+  oneof has_env {
+    google.protobuf.Value env = 5;
+  }
+  oneof has_fragment {
+    string fragment = 6;
+  }
+  oneof has_headers {
+    google.protobuf.Value headers = 7;
+  }
+  oneof has_inferred_content_type {
+    string inferred_content_type = 8;
+  }
+  oneof has_method {
+    string method = 9;
+  }
+  oneof has_protocol {
+    string protocol = 10;
+  }
+  oneof has_query_string {
+    google.protobuf.Value query_string = 11;
+  }
+  oneof has_url {
+    string url = 12;
+  }
+}
+
+message ResponseContext {
+  oneof has_body_size {
+    uint64 body_size = 1;
+  }
+  oneof has_cookies {
+    google.protobuf.Value cookies = 2;
+  }
+  google.protobuf.Value data = 3;
+  oneof has_headers {
+    google.protobuf.Value headers = 4;
+  }
+  oneof has_inferred_content_type {
+    string inferred_content_type = 5;
+  }
+  oneof has_status_code {
+    uint64 status_code = 6;
+  }
+}
+
+message Route {
+  oneof has_name {
+    string name = 1;
+  }
+  oneof has_params {
+    google.protobuf.Value params = 2;
+  }
+}
+
+message RuntimeContext {
+  oneof has_build {
+    string build = 1;
+  }
+  oneof has_name {
+    string name = 2;
+  }
+  oneof has_raw_description {
+    string raw_description = 3;
+  }
+  oneof has_version {
+    string version = 4;
+  }
+}
+
+message SourceMapDebugImage {
+  string code_file = 1;
+  oneof has_debug_file {
+    string debug_file = 2;
+  }
+  string debug_id = 3;
+}
+
+message Stacktrace {
+  message Stacktrace_frames {
+    message Stacktrace_frames_lock {
+      oneof has_address {
+        string address = 1;
+      }
+      oneof has_class_name {
+        string class_name = 2;
+      }
+      oneof has_package_name {
+        string package_name = 3;
+      }
+      oneof has_thread_id {
+        google.protobuf.Value thread_id = 4;
+      }
+      string type = 5;
+    }
+
+    oneof has_abs_path {
+      string abs_path = 1;
+    }
+    oneof has_addr_mode {
+      string addr_mode = 2;
+    }
+    oneof has_colno {
+      uint64 colno = 3;
+    }
+    oneof has_context_line {
+      string context_line = 4;
+    }
+    oneof has_filename {
+      string filename = 5;
+    }
+    oneof has_function {
+      string function = 6;
+    }
+    oneof has_function_id {
+      string function_id = 7;
+    }
+    oneof has_image_addr {
+      string image_addr = 8;
+    }
+    oneof has_in_app {
+      bool in_app = 9;
+    }
+    oneof has_instruction_addr {
+      string instruction_addr = 10;
+    }
+    oneof has_lineno {
+      uint64 lineno = 11;
+    }
+    oneof has_lock {
+      Stacktrace_frames_lock lock = 12;
+    }
+    oneof has_module {
+      string module = 13;
+    }
+    oneof has_package {
+      string package = 14;
+    }
+    oneof has_platform {
+      string platform = 15;
+    }
+    repeated string post_context = 16;
+    repeated string pre_context = 17;
+    oneof has_raw_function {
+      string raw_function = 18;
+    }
+    oneof has_stack_start {
+      bool stack_start = 19;
+    }
+    oneof has_symbol {
+      string symbol = 20;
+    }
+    oneof has_symbol_addr {
+      string symbol_addr = 21;
+    }
+    oneof has_vars {
+      google.protobuf.Value vars = 22;
+    }
+  }
+
+  repeated Stacktrace_frames frames = 1;
+  oneof has_instruction_addr_adjustment {
+    string instruction_addr_adjustment = 2;
+  }
+  oneof has_lang {
+    string lang = 3;
+  }
+  map<string, string> registers = 4;
+  oneof has_snapshot {
+    bool snapshot = 5;
+  }
+}
+
+message SystemSdkInfo {
+  oneof has_sdk_name {
+    string sdk_name = 1;
+  }
+  oneof has_version_major {
+    uint64 version_major = 2;
+  }
+  oneof has_version_minor {
+    uint64 version_minor = 3;
+  }
+  oneof has_version_patchlevel {
+    uint64 version_patchlevel = 4;
+  }
+}
+
+message Thread {
+  message Thread_held_locks {
+    oneof has_address {
+      string address = 1;
+    }
+    oneof has_class_name {
+      string class_name = 2;
+    }
+    oneof has_package_name {
+      string package_name = 3;
+    }
+    oneof has_thread_id {
+      google.protobuf.Value thread_id = 4;
+    }
+    string type = 5;
+  }
+
+  message Thread_stacktrace {
+    message Thread_stacktrace_frames {
+      message Thread_stacktrace_frames_lock {
+        oneof has_address {
+          string address = 1;
+        }
+        oneof has_class_name {
+          string class_name = 2;
+        }
+        oneof has_package_name {
+          string package_name = 3;
+        }
+        oneof has_thread_id {
+          google.protobuf.Value thread_id = 4;
+        }
+        string type = 5;
+      }
+
+      oneof has_abs_path {
+        string abs_path = 1;
+      }
+      oneof has_addr_mode {
+        string addr_mode = 2;
+      }
+      oneof has_colno {
+        uint64 colno = 3;
+      }
+      oneof has_context_line {
+        string context_line = 4;
+      }
+      oneof has_filename {
+        string filename = 5;
+      }
+      oneof has_function {
+        string function = 6;
+      }
+      oneof has_function_id {
+        string function_id = 7;
+      }
+      oneof has_image_addr {
+        string image_addr = 8;
+      }
+      oneof has_in_app {
+        bool in_app = 9;
+      }
+      oneof has_instruction_addr {
+        string instruction_addr = 10;
+      }
+      oneof has_lineno {
+        uint64 lineno = 11;
+      }
+      oneof has_lock {
+        Thread_stacktrace_frames_lock lock = 12;
+      }
+      oneof has_module {
+        string module = 13;
+      }
+      oneof has_package {
+        string package = 14;
+      }
+      oneof has_platform {
+        string platform = 15;
+      }
+      repeated string post_context = 16;
+      repeated string pre_context = 17;
+      oneof has_raw_function {
+        string raw_function = 18;
+      }
+      oneof has_stack_start {
+        bool stack_start = 19;
+      }
+      oneof has_symbol {
+        string symbol = 20;
+      }
+      oneof has_symbol_addr {
+        string symbol_addr = 21;
+      }
+      oneof has_vars {
+        google.protobuf.Value vars = 22;
+      }
+    }
+
+    repeated Thread_stacktrace_frames frames = 1;
+    oneof has_instruction_addr_adjustment {
+      string instruction_addr_adjustment = 2;
+    }
+    oneof has_lang {
+      string lang = 3;
+    }
+    map<string, string> registers = 4;
+    oneof has_snapshot {
+      bool snapshot = 5;
+    }
+  }
+
+  oneof has_crashed {
+    bool crashed = 1;
+  }
+  oneof has_current {
+    bool current = 2;
+  }
+  map<string, Thread_held_locks> held_locks = 3;
+  oneof has_id {
+    google.protobuf.Value id = 4;
+  }
+  oneof has_main {
+    bool main = 5;
+  }
+  oneof has_name {
+    string name = 6;
+  }
+  oneof has_stacktrace {
+    Thread_stacktrace stacktrace = 7;
+  }
+  oneof has_state {
+    string state = 8;
+  }
+}
+
+message TraceContext {
+  message TraceContext_data {
+    message TraceContext_data_previousRoute {
+      oneof has_name {
+        string name = 1;
+      }
+      oneof has_params {
+        google.protobuf.Value params = 2;
+      }
+    }
+
+    message TraceContext_data_route {
+      oneof has_name {
+        string name = 1;
+      }
+      oneof has_params {
+        google.protobuf.Value params = 2;
+      }
+    }
+
+    oneof has_previousRoute {
+      TraceContext_data_previousRoute previousRoute = 1;
+    }
+    oneof has_route {
+      TraceContext_data_route route = 2;
+    }
+  }
+
+  oneof has_client_sample_rate {
+    double client_sample_rate = 1;
+  }
+  oneof has_data {
+    TraceContext_data data = 2;
+  }
+  oneof has_exclusive_time {
+    double exclusive_time = 3;
+  }
+  oneof has_op {
+    string op = 4;
+  }
+  oneof has_origin {
+    string origin = 5;
+  }
+  oneof has_parent_span_id {
+    string parent_span_id = 6;
+  }
+  oneof has_sampled {
+    bool sampled = 7;
+  }
+  string span_id = 8;
+  oneof has_status {
+    string status = 9;
+  }
+  string trace_id = 10;
+}
+
+message TransactionInfo {
+  message TransactionInfo_changes {
+    oneof has_propagations {
+      uint64 propagations = 1;
+    }
+    oneof has_source {
+      string source = 2;
+    }
+    oneof has_timestamp {
+      google.protobuf.Value timestamp = 3;
+    }
+  }
+
+  repeated TransactionInfo_changes changes = 1;
+  oneof has_original {
+    string original = 2;
+  }
+  oneof has_propagations {
+    uint64 propagations = 3;
+  }
+  oneof has_source {
+    string source = 4;
+  }
+}
+
+message TransactionNameChange {
+  oneof has_propagations {
+    uint64 propagations = 1;
+  }
+  oneof has_source {
+    string source = 2;
+  }
+  oneof has_timestamp {
+    google.protobuf.Value timestamp = 3;
+  }
+}
+
+message User {
+  message User_geo {
+    oneof has_city {
+      string city = 1;
+    }
+    oneof has_country_code {
+      string country_code = 2;
+    }
+    oneof has_region {
+      string region = 3;
+    }
+    oneof has_subdivision {
+      string subdivision = 4;
+    }
+  }
+
+  oneof has_data {
+    google.protobuf.Value data = 1;
+  }
+  oneof has_email {
+    string email = 2;
+  }
+  oneof has_geo {
+    User_geo geo = 3;
+  }
+  oneof has_id {
+    string id = 4;
+  }
+  oneof has_ip_address {
+    string ip_address = 5;
+  }
+  oneof has_name {
+    string name = 6;
+  }
+  oneof has_segment {
+    string segment = 7;
+  }
+  oneof has_sentry_user {
+    string sentry_user = 8;
+  }
+  oneof has_username {
+    string username = 9;
+  }
+}
+
+message UserReportV2Context {
+  oneof has_contact_email {
+    string contact_email = 1;
+  }
+  oneof has_message {
+    string message = 2;
+  }
+}

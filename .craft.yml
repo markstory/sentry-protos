@@ -1,0 +1,4 @@
+minVersion: 0.34.1
+# TODO -- craft setup
+changelog: CHANGELOG.md
+changelogPolicy: auto

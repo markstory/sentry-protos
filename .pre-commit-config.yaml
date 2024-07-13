@@ -1,0 +1,17 @@
+default_stages: [commit]
+
+repos:
+  - repo: https://github.com/bufbuild/buf
+    hooks:
+      - id: buf-lint
+      - id: buf-format
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language: system
+        types: [python]
+        require_serial: true
+        # These are generated, don't format them.
+        exclude: ^py/

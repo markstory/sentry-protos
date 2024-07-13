@@ -1,0 +1,377 @@
+
+syntax = "proto3";
+
+package sentry_protos.kafka.events.v1;
+
+import "google/protobuf/struct.proto";
+
+message Contexts {
+  message Contexts_replay {
+    oneof has_replay_id {
+      string replay_id = 1;
+    }
+  }
+
+  message Contexts_trace {
+    oneof has_sampled {
+      bool sampled = 1;
+    }
+    oneof has_span_id {
+      string span_id = 2;
+    }
+    oneof has_trace_id {
+      string trace_id = 3;
+    }
+  }
+
+  oneof has_replay {
+    Contexts_replay replay = 1;
+  }
+  oneof has_trace {
+    Contexts_trace trace = 2;
+  }
+}
+
+message ErrorData {
+  message ErrorData_contexts {
+    message ErrorData_contexts_replay {
+      oneof has_replay_id {
+        string replay_id = 1;
+      }
+    }
+
+    message ErrorData_contexts_trace {
+      oneof has_sampled {
+        bool sampled = 1;
+      }
+      oneof has_span_id {
+        string span_id = 2;
+      }
+      oneof has_trace_id {
+        string trace_id = 3;
+      }
+    }
+
+    oneof has_replay {
+      ErrorData_contexts_replay replay = 1;
+    }
+    oneof has_trace {
+      ErrorData_contexts_trace trace = 2;
+    }
+  }
+
+  message ErrorData_exception {
+    message ErrorData_exception_values {
+      message ErrorData_exception_values_mechanism {
+        google.protobuf.Value handled = 1;
+        google.protobuf.Value type = 2;
+      }
+
+      message ErrorData_exception_values_stacktrace {
+        message ErrorData_exception_values_stacktrace_frames {
+          google.protobuf.Value abs_path = 1;
+          oneof has_colno {
+            int64 colno = 2;
+          }
+          google.protobuf.Value filename = 3;
+          google.protobuf.Value function = 4;
+          oneof has_in_app {
+            bool in_app = 5;
+          }
+          oneof has_lineno {
+            int64 lineno = 6;
+          }
+          google.protobuf.Value module = 7;
+          google.protobuf.Value package = 8;
+        }
+
+        repeated ErrorData_exception_values_stacktrace_frames frames = 1;
+      }
+
+      oneof has_mechanism {
+        ErrorData_exception_values_mechanism mechanism = 1;
+      }
+      oneof has_stacktrace {
+        ErrorData_exception_values_stacktrace stacktrace = 2;
+      }
+      oneof has_thread_id {
+        google.protobuf.Value thread_id = 3;
+      }
+      google.protobuf.Value type = 4;
+      google.protobuf.Value value = 5;
+    }
+
+    repeated ErrorData_exception_values values = 1;
+  }
+
+  message ErrorData_request {
+    repeated google.protobuf.Value headers = 1;
+    google.protobuf.Value method = 2;
+  }
+
+  message ErrorData_sdk {
+    repeated google.protobuf.Value integrations = 1;
+    google.protobuf.Value name = 2;
+    google.protobuf.Value version = 3;
+  }
+
+  message ErrorData_threads {
+    message ErrorData_threads_values {
+      oneof has_id {
+        google.protobuf.Value id = 1;
+      }
+      oneof has_main {
+        bool main = 2;
+      }
+    }
+
+    repeated ErrorData_threads_values values = 1;
+  }
+
+  message ErrorData_user {
+    google.protobuf.Value email = 1;
+    map<string, google.protobuf.Value> geo = 2;
+    google.protobuf.Value id = 3;
+    oneof has_ip_address {
+      string ip_address = 4;
+    }
+    google.protobuf.Value username = 5;
+  }
+
+  oneof has_contexts {
+    ErrorData_contexts contexts = 1;
+  }
+  google.protobuf.Value culprit = 2;
+  repeated google.protobuf.Value errors = 3;
+  oneof has_exception {
+    ErrorData_exception exception = 4;
+  }
+  repeated string hierarchical_hashes = 5;
+  oneof has_location {
+    string location = 6;
+  }
+  map<string, string> modules = 7;
+  double received = 8;
+  oneof has_request {
+    ErrorData_request request = 9;
+  }
+  oneof has_sdk {
+    ErrorData_sdk sdk = 10;
+  }
+  repeated google.protobuf.Value tags = 11;
+  oneof has_threads {
+    ErrorData_threads threads = 12;
+  }
+  google.protobuf.Value title = 13;
+  google.protobuf.Value type = 14;
+  oneof has_user {
+    ErrorData_user user = 15;
+  }
+  oneof has_version {
+    string version = 16;
+  }
+}
+
+message ErrorMessage {
+  ErrorData data = 1;
+  string datetime = 2;
+  string event_id = 3;
+  int64 group_id = 4;
+  string message = 5;
+  oneof has_platform {
+    string platform = 6;
+  }
+  string primary_hash = 7;
+  int64 project_id = 8;
+  oneof has_retention_days {
+    int64 retention_days = 9;
+  }
+}
+
+message Exception {
+  message Exception_values {
+    message Exception_values_mechanism {
+      google.protobuf.Value handled = 1;
+      google.protobuf.Value type = 2;
+    }
+
+    message Exception_values_stacktrace {
+      message Exception_values_stacktrace_frames {
+        google.protobuf.Value abs_path = 1;
+        oneof has_colno {
+          int64 colno = 2;
+        }
+        google.protobuf.Value filename = 3;
+        google.protobuf.Value function = 4;
+        oneof has_in_app {
+          bool in_app = 5;
+        }
+        oneof has_lineno {
+          int64 lineno = 6;
+        }
+        google.protobuf.Value module = 7;
+        google.protobuf.Value package = 8;
+      }
+
+      repeated Exception_values_stacktrace_frames frames = 1;
+    }
+
+    oneof has_mechanism {
+      Exception_values_mechanism mechanism = 1;
+    }
+    oneof has_stacktrace {
+      Exception_values_stacktrace stacktrace = 2;
+    }
+    oneof has_thread_id {
+      google.protobuf.Value thread_id = 3;
+    }
+    google.protobuf.Value type = 4;
+    google.protobuf.Value value = 5;
+  }
+
+  repeated Exception_values values = 1;
+}
+
+message ExceptionMechanism {
+  google.protobuf.Value handled = 1;
+  google.protobuf.Value type = 2;
+}
+
+message ExceptionValue {
+  message ExceptionValue_mechanism {
+    google.protobuf.Value handled = 1;
+    google.protobuf.Value type = 2;
+  }
+
+  message ExceptionValue_stacktrace {
+    message ExceptionValue_stacktrace_frames {
+      google.protobuf.Value abs_path = 1;
+      oneof has_colno {
+        int64 colno = 2;
+      }
+      google.protobuf.Value filename = 3;
+      google.protobuf.Value function = 4;
+      oneof has_in_app {
+        bool in_app = 5;
+      }
+      oneof has_lineno {
+        int64 lineno = 6;
+      }
+      google.protobuf.Value module = 7;
+      google.protobuf.Value package = 8;
+    }
+
+    repeated ExceptionValue_stacktrace_frames frames = 1;
+  }
+
+  oneof has_mechanism {
+    ExceptionValue_mechanism mechanism = 1;
+  }
+  oneof has_stacktrace {
+    ExceptionValue_stacktrace stacktrace = 2;
+  }
+  oneof has_thread_id {
+    google.protobuf.Value thread_id = 3;
+  }
+  google.protobuf.Value type = 4;
+  google.protobuf.Value value = 5;
+}
+
+message ReplayContext {
+  oneof has_replay_id {
+    string replay_id = 1;
+  }
+}
+
+message Request {
+  repeated google.protobuf.Value headers = 1;
+  google.protobuf.Value method = 2;
+}
+
+message Sdk {
+  repeated google.protobuf.Value integrations = 1;
+  google.protobuf.Value name = 2;
+  google.protobuf.Value version = 3;
+}
+
+message StackFrame {
+  google.protobuf.Value abs_path = 1;
+  oneof has_colno {
+    int64 colno = 2;
+  }
+  google.protobuf.Value filename = 3;
+  google.protobuf.Value function = 4;
+  oneof has_in_app {
+    bool in_app = 5;
+  }
+  oneof has_lineno {
+    int64 lineno = 6;
+  }
+  google.protobuf.Value module = 7;
+  google.protobuf.Value package = 8;
+}
+
+message StackTrace {
+  message StackTrace_frames {
+    google.protobuf.Value abs_path = 1;
+    oneof has_colno {
+      int64 colno = 2;
+    }
+    google.protobuf.Value filename = 3;
+    google.protobuf.Value function = 4;
+    oneof has_in_app {
+      bool in_app = 5;
+    }
+    oneof has_lineno {
+      int64 lineno = 6;
+    }
+    google.protobuf.Value module = 7;
+    google.protobuf.Value package = 8;
+  }
+
+  repeated StackTrace_frames frames = 1;
+}
+
+message Thread {
+  message Thread_values {
+    oneof has_id {
+      google.protobuf.Value id = 1;
+    }
+    oneof has_main {
+      bool main = 2;
+    }
+  }
+
+  repeated Thread_values values = 1;
+}
+
+message ThreadValue {
+  oneof has_id {
+    google.protobuf.Value id = 1;
+  }
+  oneof has_main {
+    bool main = 2;
+  }
+}
+
+message TraceContext {
+  oneof has_sampled {
+    bool sampled = 1;
+  }
+  oneof has_span_id {
+    string span_id = 2;
+  }
+  oneof has_trace_id {
+    string trace_id = 3;
+  }
+}
+
+message User {
+  google.protobuf.Value email = 1;
+  map<string, google.protobuf.Value> geo = 2;
+  google.protobuf.Value id = 3;
+  oneof has_ip_address {
+    string ip_address = 4;
+  }
+  google.protobuf.Value username = 5;
+}

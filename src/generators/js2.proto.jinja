@@ -1,18 +1,18 @@
 {% macro render_prop(schema, prop_name, unpacked) %}
 {% if unpacked is an(NamedStructureType) %}
-{{ schema.name }}{{ caller() }}
+{{ schema.name | as_pascal_case }}{{ caller() }}
 {% elif unpacked is an(ScalarType) %}
 {{ unpacked.proto_scalar_type }}{{ caller() }}
 {% elif unpacked is an(SumType) %}
-oneof {{ prop_name }} {
+oneof {{ prop_name | as_snake_case }} {
 {% for part in unpacked.parts %}
 {% filter indent(width=4, first=True) -%}
-{% set v = caller %}{% call render_prop(part, part.name, part.unpack()) %}{{ v() }}{% endcall %}
+{% set v = caller %}{% call render_prop(part, part.name, part.unpack()) %} {{ part.name | lower }}{{ v() }}{% endcall %}
 {%- endfilter %}
 {% endfor %}
 }
 {% elif unpacked is an(NullableType) %}
-oneof has_{{ prop_name }} {
+oneof has_{{ prop_name | as_snake_case }} {
 {% filter indent(width=4, first=True) -%}
 {% set v = caller %}{% call render_prop(schema, prop_name, unpacked.inner) %}{{ v() }}{% endcall %}
 {%- endfilter %}
@@ -27,13 +27,14 @@ oneof has_{{ prop_name }} {
 {% macro render_definition(schema, unpacked) %}
 {% set index = [] %}
 {% if unpacked is an(NamedStructureType) %}
-message {{ schema.name }} {
+{{ schema.schema.description | as_comment }}
+message {{ schema.name | as_pascal_case }} {
 {% filter indent(width=4, first=True) %}
 {% for k in unpacked.definition_dependencies  %}
 {{ render_definition(unpacked.properties[k], unpacked.properties[k].unpack()) -}}
 {% endfor %}
 {% for name, prop in unpacked.properties.items()  %}
-{% call render_prop(prop, name, prop.unpack()) %}{% do index.append(1) %} {{ name }} = {{ len(index) }};{% endcall %}
+{% call render_prop(prop, name, prop.unpack()) %}{% do index.append(1) %} {{ name | as_snake_case }} = {{ len(index) }} {{ prop.unpack().extension_text }};{% endcall %}
 {% endfor %}
 {% endfilter %}
 
@@ -47,15 +48,21 @@ message {{ schema.name }} {
 {% elif unpacked is an(MapType) %}
 {{- render_definition(schema, unpacked.inner) -}}
 {% elif unpacked is an(SumType) %}
-{% for schema in unpacked.parts %}
-{{- render_definition(schema, schema.unpack()) -}}
-{% endfor %}
+{{ schema.schema.description | as_comment }}
+message {{ schema.name | as_pascal_case }} {
+{% filter indent(width=4, first=True) %}
+{% call render_prop(schema, "value", schema.unpack()) %}{% do index.append(1) %} = {{ len(index) }};{% endcall %}
+{% endfilter %}
+
+}
+
 {% endif %}
 {% endmacro %}
 
 syntax = "proto3";
 
 import "google/protobuf/struct.proto";
+import "sentry_protos/options/v1/options.proto";
 
 package {{ top_level.package_name }};
 

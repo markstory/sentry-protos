@@ -11,13 +11,14 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
+
 def get_requirements():
     with open("requirements.txt") as fp:
         return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
 
 
 def make_protos():
-    protos = glob.glob(f"{here}/src/**/*.proto", recursive=True)
+    protos = glob.glob(f"{here}/src/sentry_protos/**/*.proto", recursive=True)
     with tempfile.TemporaryDirectory() as tmpd:
         for proto in protos:
             result = subprocess.run(
@@ -37,7 +38,7 @@ def make_protos():
             if result.returncode != 0:
                 sys.exit(1)
 
-        for dir, _, files in os.walk(tmpd):
+        for dir, _, files in os.walk(os.path.join(tmpd, "sentry_protos")):
             if "__init__.py" in files:
                 continue
             with open(f"{dir}/__init__.py", "w") as f:

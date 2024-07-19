@@ -1,5 +1,6 @@
 .PHONY: build
 build:
+	mkdir py || true
 	.venv/bin/pip install .
 
 .PHONY: update-venv

@@ -1,7 +1,19 @@
-.PHONY: build
-build:
-	mkdir py || true
+# Python client targets
+py:
+	mkdir py
+
+.PHONY: build-py
+build-py: py
 	.venv/bin/pip install .
+
+# Rust client targets
+.PHONY: build-rs
+build-rs:
+	
+
+
+.PHONY: build
+build: build-py build-rs
 
 .PHONY: update-venv
 update-venv:

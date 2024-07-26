@@ -3,11 +3,19 @@ name = "sentry_protos"
 version = "0.1.0"
 edition = "2021"
 
+
+# [[bin]]
+# name = "hello-client"
+# path = "src/hello/client.rs"
+
 [dependencies]
 tonic = "0.12"
 prost = "0.13"
+prost-types = "0.13"
 tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
 
 [build-dependencies]
 glob = "0.3.1"
 tonic-build = "0.12"
+regex = "1.10.5"
+prost-types = "0.13"

@@ -20,10 +20,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Compile rust code for all proto files.
     for entry in glob("../src/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
         if let Ok(path) = entry {
-            let module_info = get_module_info(&path, "../src");
-            module_metadata.push(module_info);
+            module_metadata.push(get_module_info(&path));
 
-            // TODO this doesn't currently handl the options/v1/ path
+            // TODO this doesn't currently handle the options/v1/ path
             // correctly. Only topics.proto is saved, options.proto
             // is lost.
             tonic_build::configure()
@@ -41,6 +40,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         visited.push(module.name.as_str());
 
+        // TODO find a better way to generate this code
         lib_rs.push_str("#[path = \"\"]\n");
         lib_rs.push_str(format!("pub mod {} {{\n", module.name).as_ref());
         lib_rs.push_str(format!("    #[path = \"{}.rs\"]\n", module.path).as_ref());
@@ -49,6 +49,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         lib_rs.push_str("\n");
     }
 
+    // Generate lib.rs with the proto modules.
     let mut lib_file = File::create("src/lib.rs").unwrap();
     lib_file.write_all(lib_rs.as_bytes()).expect("Failed to write lib.rs");
 
@@ -56,7 +57,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn get_module_info(path: &PathBuf, base_dir: &str) -> ModuleInfo {
+fn get_module_info(path: &PathBuf) -> ModuleInfo {
     let file = fs::read(path);
     let Ok(contents) = file else {
         panic!("Could not read {:?}", path);

@@ -151,3 +151,5 @@ data/
 
 # generated protos
 py/*
+rust/src/sentry_protos.*
+rust/src/lib.rs

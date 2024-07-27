@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 
-# [[bin]]
-# name = "hello-client"
-# path = "src/hello/client.rs"
+[[bin]]
+name = "hello-client"
+path = "src/hello/client.rs"
 
 [dependencies]
 tonic = "0.12"

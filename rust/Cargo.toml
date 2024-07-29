@@ -3,11 +3,6 @@ name = "sentry_protos"
 version = "0.1.0"
 edition = "2021"
 
-
-[[bin]]
-name = "hello-client"
-path = "src/hello/client.rs"
-
 [dependencies]
 tonic = "0.12"
 prost = "0.13"

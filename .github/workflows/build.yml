@@ -19,8 +19,9 @@ jobs:
           python-version: 3.11
 
       - run: |
-          make build-py
+          pip install .
           pip install wheel
+          make build-py
           python setup.py bdist_wheel
       - uses: actions/upload-artifact@v3.1.1
         with:

@@ -1,10 +1,13 @@
+# Makefile assumes that direnv is active, or that pip/python on PATH
+# is what you want to use.
+
 # Python client targets
 py:
 	mkdir py
 
 .PHONY: build-py
 build-py: py
-	.venv/bin/pip install .
+	pip install .
 
 # Rust client targets
 .PHONY: build-rust
@@ -16,5 +19,5 @@ build: build-py build-rust
 
 .PHONY: update-venv
 update-venv:
-	.venv/bin/pip install -r requirements.txt
-	.venv/bin/pip install -e src
+	pip install -r requirements.txt
+	pip install -e src

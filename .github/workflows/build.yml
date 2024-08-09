@@ -6,7 +6,7 @@ on:
       - release/**
 
 jobs:
-  dist:
+  pydist:
     name: python distribution packages
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
           python-version: 3.11
 
       - run: |
-          pip install .
+          make build-py
           pip install wheel
           python setup.py bdist_wheel
       - uses: actions/upload-artifact@v3.1.1

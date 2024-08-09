@@ -1,4 +1,16 @@
-minVersion: 0.34.1
-# TODO -- craft setup
+minVersion: 1.20.0
+github:
+  owner: getsentry
+  repo: sentry-protos
+targets:
+  - name: pypi
+  - name: github
+  - name: sentry-pypi
+    internalPypiRepo: getsentry/pypi
+artifactProvider:
+  name: github
+requireNames:
+  - /^sentry_protos.+-py3-none-any.whl$/
+  - /^sentry_protos.+.tar.gz$/
 changelog: CHANGELOG.md
 changelogPolicy: auto

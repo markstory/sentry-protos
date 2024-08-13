@@ -44,14 +44,19 @@ def make_protos():
             with open(f"{dir}/__init__.py", "w") as f:
                 f.write("")
 
+        with open(f"{here}/VERSION", "r") as f:
+            version = f.read()
+
         for p in os.listdir(tmpd):
             p = f"{tmpd}/{p}"
             if not os.path.isdir(p):
                 continue
             with open(f"{p}/py.typed", "w") as f:
                 f.write("")
+            with open(f"{p}/__init__.py", "w") as f:
+                f.write(f'__version__ = "{version}"')
 
-        shutil.rmtree(f"{here}/py/sentry_protos")
+        shutil.rmtree(f"{here}/py/sentry_protos", ignore_errors=True)
         shutil.move(f"{tmpd}/sentry_protos", f"{here}/py/sentry_protos")
 
 

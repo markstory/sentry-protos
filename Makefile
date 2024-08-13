@@ -6,6 +6,11 @@
 build-py: update-venv
 	pip install .
 
+.PHONY: clean-py
+clean-py:
+	rm -rf ./py/sentry_protos
+	rm -rf ./py/sentry-protos.egg-info
+
 # Rust client targets
 .PHONY: build-rust
 build-rust:

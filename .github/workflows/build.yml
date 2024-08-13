@@ -22,8 +22,8 @@ jobs:
           pip install wheel
           make update-venv
           make build-py
-          python setup.py bdist_wheel
+          cd py && python -m build
       - uses: actions/upload-artifact@v3.1.1
         with:
           name: ${{ github.sha }}
-          path: dist/*
+          path: py/dist/*

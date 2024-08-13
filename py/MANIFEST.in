@@ -1,0 +1,4 @@
+include README.md LICENSE pyproject.toml
+recursive-include sentry_protos *.py
+recursive-include sentry_protos py.typed
+global-exclude *~

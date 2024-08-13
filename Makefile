@@ -2,11 +2,8 @@
 # is what you want to use.
 
 # Python client targets
-py:
-	mkdir py
-
 .PHONY: build-py
-build-py: py
+build-py: update-venv
 	pip install .
 
 # Rust client targets

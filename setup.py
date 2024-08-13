@@ -51,8 +51,8 @@ def make_protos():
             with open(f"{p}/py.typed", "w") as f:
                 f.write("")
 
-        shutil.rmtree(f"{here}/py")
-        shutil.move(tmpd, f"{here}/py/")
+        shutil.rmtree(f"{here}/py/sentry_protos")
+        shutil.move(f"{tmpd}/sentry_protos", f"{here}/py/sentry_protos")
 
 
 class proto_build(build):

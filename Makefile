@@ -4,7 +4,6 @@
 .PHONY: update-venv
 update-venv:
 	pip install -r requirements.txt
-	pip install -e src
 
 # Python client targets
 .PHONY: build-py

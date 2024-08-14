@@ -6,10 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "sentry-protos-generators"
 # Never released, only used internally.
 version = "0.1.0"
-
-# Ignore dependencies, let them be just development dependencies installed in requirements.txt
-# If generators were extracted as their own project, may make sense to be more specific, but in
-# practice these are currently tightly coupled.
+dependencies = [
+    "openapi-pydantic==0.4.0",
+    "jinja2==3.1.4",
+]
 
 [project.scripts]
 js2proto = "generators.js2proto:main"

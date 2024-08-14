@@ -27,5 +27,9 @@ clean-py:
 build-rust:
 	cd rust && cargo build
 
+.PHONY: clean-rust
+clean-rust:
+	cd rust && cargo clean
+
 .PHONY: build
 build: build-py build-rust

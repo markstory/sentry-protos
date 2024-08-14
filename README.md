@@ -9,6 +9,13 @@ https://www.notion.so/sentry/Protobuf-gRPC-schema-registry-7325ddca05dc49a5b05aa
 
 Use the `release` workflow in GitHub actions to create new releases. Each time a release is created, packages will be published for each supported language.
 
+# Unstable protos
+
+While features are in development, we occasionally need to break backwards compatibility.
+Any proto packages that end in `alpha`, `beta`, or `test` are exempt from breaking change validation.
+
+For example: `sentry_protos.sentry.confabulator.v1test` would not be subject to backwards compatibility.
+
 # Local development workflow
 
 sentry-protos makes it easy to develop and test protobuf/grpc changes locally before making

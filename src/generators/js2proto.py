@@ -39,7 +39,7 @@ def register_test(c: _T) -> _T:
     return c
 
 
-def cleaneup_jsonschema(d: Any) -> dict:
+def cleanup_jsonschema(d: Any) -> dict:
     """
     Converts a jsonschema to an openapi schema to make it easier to operate on, normalizing
     some of the weirder jsonschema options where possible.
@@ -53,28 +53,28 @@ def cleaneup_jsonschema(d: Any) -> dict:
 
     if "definitions" in d:
         for k, v in d["definitions"].items():
-            d["definitions"][k] = cleaneup_jsonschema(v)
+            d["definitions"][k] = cleanup_jsonschema(v)
 
     if "type" in d and isinstance(d["type"], list):
         if len(d["type"]) == 1:
             d["type"] = d["type"][0]
 
     if "anyOf" in d:
-        d["anyOf"] = [cleaneup_jsonschema(v) for v in d["anyOf"]]
+        d["anyOf"] = [cleanup_jsonschema(v) for v in d["anyOf"]]
 
     if "items" in d:
         if isinstance(d["items"], list):
-            d["prefixItems"] = [cleaneup_jsonschema(v) for v in d["items"]]
+            d["prefixItems"] = [cleanup_jsonschema(v) for v in d["items"]]
             del d["items"]
         else:
-            d["items"] = cleaneup_jsonschema(d["items"])
+            d["items"] = cleanup_jsonschema(d["items"])
 
     if "properties" in d:
         for k, v in d["properties"].items():
-            d["properties"][k] = cleaneup_jsonschema(v)
+            d["properties"][k] = cleanup_jsonschema(v)
 
     if "additionalProperties" in d and isinstance(d["additionalProperties"], dict):
-        d["additionalProperties"] = cleaneup_jsonschema(d["additionalProperties"])
+        d["additionalProperties"] = cleanup_jsonschema(d["additionalProperties"])
 
     return d
 
@@ -379,15 +379,16 @@ def as_snake_case(value: str) -> str:
 
 
 def main():
-    src_root = os.path.abspath(os.path.join(here, ".."))
+    src_root = os.path.abspath(os.path.join(here, "..", "..", "proto"))
     src = sys.argv[1]
+    print([src_root, src])
     assert os.path.abspath(src).startswith(src_root)
     assert src.endswith(".schema.json")
     dst = src.replace(".schema.json", ".proto")
     with open(src, "r") as source_schema, open(dst, "w") as output_proto:
         print(f"Processing {src}")
         d = json.load(source_schema)
-        d = cleaneup_jsonschema(d)
+        d = cleanup_jsonschema(d)
 
         schema = TopLevelSchema(
             os.path.dirname(os.path.relpath(src, src_root)).replace("/", "."),

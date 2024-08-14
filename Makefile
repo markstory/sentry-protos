@@ -9,7 +9,8 @@ update-venv:
 # Python client targets
 .PHONY: build-py
 build-py:
-	pip install .
+	pip install -r requirements.txt
+	python py/generate.py
 
 .PHONY: package-py
 package-py: build-py

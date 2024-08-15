@@ -1,16 +1,16 @@
 minVersion: 1.20.0
+changelog: CHANGELOG.md
+changelogPolicy: auto
 github:
   owner: getsentry
   repo: sentry-protos
-targets:
-  - name: pypi
-  - name: github
-  - name: sentry-pypi
-    internalPypiRepo: getsentry/pypi
 artifactProvider:
   name: github
+targets:
+  - name: github
+  - name: pypi
+  - name: sentry-pypi
+    internalPypiRepo: getsentry/pypi
 requireNames:
   - /^sentry_protos.+-py3-none-any.whl$/
   - /^sentry_protos.+.tar.gz$/
-changelog: CHANGELOG.md
-changelogPolicy: auto

@@ -10,7 +10,7 @@ readme = "README.md"
 license = {file = "LICENSE.md"}
 requires-python = ">3.10"
 dependencies = [
-    "protobuf>=4.25,<5",
+    "protobuf>=5.27.3,<6",
     "grpcio>=1.59,<2",
     "grpc-stubs>=1.53,<2"
 ]

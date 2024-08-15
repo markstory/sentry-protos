@@ -47,7 +47,7 @@ def build_protos():
             with open(f"{p}/py.typed", "w") as f:
                 f.write("")
             with open(f"{p}/__init__.py", "w") as f:
-                f.write(f'__version__ = "{version}"')
+                f.write(f'__version__ = "{version}"\n')
 
         shutil.rmtree(f"{root_dir}/py/sentry_protos", ignore_errors=True)
         shutil.move(f"{tmpd}/sentry_protos", f"{root_dir}/py/sentry_protos")

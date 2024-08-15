@@ -38,7 +38,7 @@ def build_protos():
                 f.write("")
 
         with open(f"{root_dir}/VERSION", "r") as f:
-            version = f.read()
+            version = f.read().strip()
 
         for p in os.listdir(tmpd):
             p = f"{tmpd}/{p}"

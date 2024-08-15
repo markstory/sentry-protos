@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package sentry_protos.snuba.v1alpha;
+
+message RequestMeta {
+  uint64 organization_id = 1;
+  string cogs_category = 2;
+  string referrer = 3;
+  repeated uint64 project_ids = 4; // can be empty
+}

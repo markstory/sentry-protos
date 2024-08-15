@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package sentry_protos.dev.snuba.v1;
+package sentry_protos.snuba.v1alpha;
 
 message RequestMeta {
   uint64 organization_id = 1;

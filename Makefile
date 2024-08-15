@@ -4,12 +4,12 @@
 .PHONY: update-venv
 update-venv:
 	pip install -r requirements.txt
-	pip install -e src
 
 # Python client targets
 .PHONY: build-py
 build-py:
-	pip install .
+	pip install -r requirements.txt
+	python py/generate.py
 
 .PHONY: package-py
 package-py: build-py
@@ -25,6 +25,10 @@ clean-py:
 .PHONY: build-rust
 build-rust:
 	cd rust && cargo build
+
+.PHONY: clean-rust
+clean-rust:
+	cd rust && cargo clean
 
 .PHONY: build
 build: build-py build-rust

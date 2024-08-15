@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut module_metadata = Vec::new();
 
     // Compile rust code for all proto files.
-    for entry in glob("../src/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
+    for entry in glob("../proto/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
         if let Ok(path) = entry {
             module_metadata.push(get_module_info(&path));
 
@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             // is lost.
             tonic_build::configure()
                 .out_dir("../rust/src")
-                .compile(&[path], &["../src"])
+                .compile(&[path], &["../proto"])
                 .unwrap();
         }
     }

@@ -1,3 +1,10 @@
+## 0.1.6
+
+### Various fixes & improvements
+
+- Add metadata that crates.io wants (b61dad90) by @markstory
+- Add craft target for crates and toplevel Cargo.toml (ef9dcc19) by @markstory
+
 ## 0.1.4
 
 ### Various fixes & improvements

@@ -8,5 +8,10 @@ cd "$SCRIPT_DIR/.."
 OLD_VERSION="$1"
 NEW_VERSION="$2"
 
+# Update VERSION file
 echo "$NEW_VERSION" > VERSION
+
+# Update rust/Cargo.toml
+perl -pi -e "s/^version = \".*?\"/version = \"$NEW_VERSION\"/" rust/Cargo.toml
+
 echo "New version: $NEW_VERSION"

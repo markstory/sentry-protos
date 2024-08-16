@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut module_metadata = Vec::new();
 
     // Compile rust code for all proto files.
-    for entry in glob("../proto/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
+    for entry in glob("./proto/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
         if let Ok(path) = entry {
             module_metadata.push(get_module_info(&path));
 
@@ -26,8 +26,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             // correctly. Only topics.proto is saved, options.proto
             // is lost.
             tonic_build::configure()
-                .out_dir("../rust/src")
-                .compile(&[path], &["../proto"])
+                .out_dir("./rust/src")
+                .compile(&[path], &["./proto"])
                 .unwrap();
         }
     }
@@ -44,13 +44,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         lib_rs.push_str("#[path = \"\"]\n");
         lib_rs.push_str(format!("pub mod {} {{\n", module.name).as_ref());
         lib_rs.push_str(format!("    #[path = \"{}.rs\"]\n", module.path).as_ref());
+        // TODO not all packages are v1
         lib_rs.push_str("    pub mod v1;\n");
         lib_rs.push_str("}\n");
         lib_rs.push_str("\n");
     }
 
     // Generate lib.rs with the proto modules.
-    let mut lib_file = File::create("src/lib.rs").unwrap();
+    let mut lib_file = File::create("./rust/src/lib.rs").unwrap();
     lib_file.write_all(lib_rs.as_bytes()).expect("Failed to write lib.rs");
 
     // Once protos are built, layer in client adapters.
@@ -73,3 +74,4 @@ fn get_module_info(path: &PathBuf) -> ModuleInfo {
 
     ModuleInfo {name: name, path: package_name}
 }
+

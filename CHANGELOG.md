@@ -1,3 +1,9 @@
+## 0.1.7
+
+### Various fixes & improvements
+
+- Update bump-version to adjust version in Cargo.toml as well. (8ed95317) by @markstory
+
 ## 0.1.6
 
 ### Various fixes & improvements

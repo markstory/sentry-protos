@@ -149,7 +149,5 @@ data/
 # Codecov
 .artifacts/
 
-# generated protos
+# Generated bindings
 py/sentry_protos/*
-rust/src/sentry_protos.*
-rust/src/lib.rs

@@ -11,6 +11,7 @@ targets:
   - name: pypi
   - name: sentry-pypi
     internalPypiRepo: getsentry/pypi
+  - name: crates
 requireNames:
   - /^sentry_protos.+-py3-none-any.whl$/
   - /^sentry_protos.+.tar.gz$/

@@ -26,9 +26,13 @@ jobs:
       - name: Generate rust code
         run: |
           make build-rust
-          # craft won't commit untracked files
+
+      - name: Commit generated rust code
+        run: |
+          git config user.email bot@getsentry.com
+          git config user.name getsentry-bot
           git add rust/src
-          git commit -m 'update generated rust bindings' --author='getsentry-bot <bot@getsentry.io>'
+          git commit -m 'regenerate rust bindings'
 
       - name: Prepare release
         uses: getsentry/action-prepare-release@v1

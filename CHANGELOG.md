@@ -1,3 +1,15 @@
+## 0.1.10
+
+### Various fixes & improvements
+
+- regenerate rust bindings (91937914)
+- Try a different approach to getting a local commit (a7b9806b) by @markstory
+- Try commiting rust code before preparing release (74066c39) by @markstory
+- Allow generated rust code to be commited (6b9573bb) by @markstory
+- craft wants no modified files (3e3c2d7d) by @markstory
+- Take a different approach with generating rust code (5b9c41dc) by @markstory
+- Expand pre-release script to generate code for rust (bbb642d5) by @markstory
+
 ## 0.1.7
 
 ### Various fixes & improvements

@@ -1,3 +1,12 @@
+## 0.1.11
+
+### Various fixes & improvements
+
+- regenerate rust bindings (f6660e65)
+- Remove file from package root (df3989be) by @markstory
+- Don't use build.rs (c6c97658) by @markstory
+- Remove generated rust code from last release attempt (6dcef8c2) by @markstory
+
 ## 0.1.10
 
 ### Various fixes & improvements

@@ -32,6 +32,7 @@ jobs:
           git config user.email bot@getsentry.com
           git config user.name getsentry-bot
           git add rust/src
+          git add Cargo.lock
           git commit -m 'regenerate rust bindings'
 
       - name: Prepare release

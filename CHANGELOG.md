@@ -1,3 +1,13 @@
+## 0.1.12
+
+### Various fixes & improvements
+
+- regenerate rust bindings (1e6ccac9)
+- Include Cargo.lock in generated code commit (99ad22e0)
+- Fix mistakes (02776dd8)
+- Cleanup generated rust code (829ff721)
+- Add postrelease script for cleaning up rust packages (8d6ad00b) by @markstory
+
 ## 0.1.11
 
 ### Various fixes & improvements

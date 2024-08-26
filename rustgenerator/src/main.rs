@@ -14,24 +14,37 @@ struct ModuleInfo {
     path: String,
 }
 
+fn find_proto_files(proto_dir: &str) -> impl Iterator<Item = PathBuf> {
+    let proto_pattern = format!("{}/**/*.proto", proto_dir); 
+    match glob(&proto_pattern) {
+        Ok(iter) => iter
+            .map(|item| item.expect("Unable to read file"))
+            .map(|item| item.to_owned()),
+        Err(err) => panic!(
+            "Unable to read proto directory {}: {:?}",
+            proto_dir,
+            err
+        )
+    }
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // collect module names
+    let proto_dir = "./proto/sentry_protos";
+    let proto_files = find_proto_files(proto_dir);
+
+    // collect module names to generate lib.rs
     let mut module_metadata = Vec::new();
+    let mut proto_file_str: Vec<PathBuf> = Vec::new();
+    for file in proto_files {
+        module_metadata.push(get_module_info(&file));
+        proto_file_str.push(file);
+    }
 
     // Compile rust code for all proto files.
-    for entry in glob("./proto/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
-        if let Ok(path) = entry {
-            module_metadata.push(get_module_info(&path));
-
-            // TODO this doesn't currently handle the options/v1/ path
-            // correctly. Only topics.proto is saved, options.proto
-            // is lost.
-            tonic_build::configure()
-                .out_dir("./rust/src")
-                .compile(&[path], &["./proto"])
-                .unwrap();
-        }
-    }
+    prost_build::Config::new()
+        .out_dir("./rust/src")
+        .compile_protos(&proto_file_str, &["./proto"])
+        .unwrap();
 
     let mut visited: Vec<&str> = vec![];
     let mut lib_rs = String::new();

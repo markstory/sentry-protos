@@ -745,7 +745,6 @@ version = "0.1.10"
 dependencies = [
  "glob",
  "prost",
- "prost-build",
  "prost-types",
  "regex",
  "tokio",

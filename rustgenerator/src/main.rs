@@ -44,9 +44,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Compile rust code for all proto files.
     println!("Generating proto bindings");
-    prost_build::Config::new()
+    tonic_build::configure()
         .out_dir("./rust/src")
-        .compile_protos(&proto_file_str, &["./proto"])
+        .emit_rerun_if_changed(false)
+        .compile(&proto_file_str, &["./proto"])
         .unwrap();
 
     let mut visited: Vec<&str> = vec![];

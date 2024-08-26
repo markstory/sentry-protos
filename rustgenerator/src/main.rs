@@ -30,6 +30,8 @@ fn find_proto_files(proto_dir: &str) -> impl Iterator<Item = PathBuf> {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let proto_dir = "./proto/sentry_protos";
+    println!("Generating protos in {}", proto_dir);
+
     let proto_files = find_proto_files(proto_dir);
 
     // collect module names to generate lib.rs
@@ -41,6 +43,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Compile rust code for all proto files.
+    println!("Generating proto bindings");
     prost_build::Config::new()
         .out_dir("./rust/src")
         .compile_protos(&proto_file_str, &["./proto"])
@@ -64,6 +67,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Generate lib.rs with the proto modules.
+    println!("Generating src/lib.rs");
     let mut lib_file = File::create("./rust/src/lib.rs").unwrap();
     lib_file.write_all(lib_rs.as_bytes()).expect("Failed to write lib.rs");
 

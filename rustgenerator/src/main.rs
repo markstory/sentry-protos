@@ -10,47 +10,63 @@ use regex::Regex;
 #[derive(Clone, Debug)]
 struct ModuleInfo {
     name: String,
+    version: String,
     path: String,
 }
 
+fn find_proto_files(proto_dir: &str) -> impl Iterator<Item = PathBuf> {
+    let proto_pattern = format!("{}/**/*.proto", proto_dir); 
+    match glob(&proto_pattern) {
+        Ok(iter) => iter
+            .map(|item| item.expect("Unable to read file"))
+            .map(|item| item.to_owned()),
+        Err(err) => panic!(
+            "Unable to read proto directory {}: {:?}",
+            proto_dir,
+            err
+        )
+    }
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // collect module names
+    let proto_dir = "./proto/sentry_protos";
+    println!("Generating protos in {}", proto_dir);
+
+    // collect module names to generate lib.rs
     let mut module_metadata = Vec::new();
+    let mut proto_file_str: Vec<PathBuf> = Vec::new();
+    for file in find_proto_files(proto_dir) {
+        module_metadata.push(get_module_info(&file));
+        proto_file_str.push(file);
+    }
 
     // Compile rust code for all proto files.
-    for entry in glob("./proto/sentry_protos/**/*.proto").expect("Failed to read glob pattern") {
-        if let Ok(path) = entry {
-            module_metadata.push(get_module_info(&path));
-
-            // TODO this doesn't currently handle the options/v1/ path
-            // correctly. Only topics.proto is saved, options.proto
-            // is lost.
-            tonic_build::configure()
-                .out_dir("./rust/src")
-                .compile(&[path], &["./proto"])
-                .unwrap();
-        }
-    }
+    println!("Generating proto bindings");
+    tonic_build::configure()
+        .out_dir("./rust/src")
+        .emit_rerun_if_changed(false)
+        .compile(&proto_file_str, &["./proto"])
+        .unwrap();
 
     let mut visited: Vec<&str> = vec![];
     let mut lib_rs = String::new();
     for module in module_metadata.iter() {
-        if visited.iter().any(|i| i.contains(&module.name)) {
+        if visited.iter().any(|i| i.contains(&module.path)) {
             continue;
         }
-        visited.push(module.name.as_str());
+        visited.push(module.path.as_str());
 
         // TODO find a better way to generate this code
         lib_rs.push_str("#[path = \"\"]\n");
         lib_rs.push_str(format!("pub mod {} {{\n", module.name).as_ref());
         lib_rs.push_str(format!("    #[path = \"{}.rs\"]\n", module.path).as_ref());
-        // TODO not all packages are v1
-        lib_rs.push_str("    pub mod v1;\n");
+        lib_rs.push_str(format!("    pub mod {};\n", module.version).as_ref());
         lib_rs.push_str("}\n");
         lib_rs.push_str("\n");
     }
 
     // Generate lib.rs with the proto modules.
+    println!("Generating src/lib.rs");
     let mut lib_file = File::create("./rust/src/lib.rs").unwrap();
     lib_file.write_all(lib_rs.as_bytes()).expect("Failed to write lib.rs");
 
@@ -70,8 +86,10 @@ fn get_module_info(path: &PathBuf) -> ModuleInfo {
     };
     let package_name = captures["name"].to_string();
     let mut parts = package_name.split('.');
-    let name = parts.nth_back(1).unwrap().to_string();
 
-    ModuleInfo {name: name, path: package_name}
+    let version = parts.nth_back(0).unwrap().to_string();
+    let name = parts.nth_back(0).unwrap().to_string();
+
+    ModuleInfo {name: name, version: version, path: package_name}
 }
 

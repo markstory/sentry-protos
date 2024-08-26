@@ -32,12 +32,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let proto_dir = "./proto/sentry_protos";
     println!("Generating protos in {}", proto_dir);
 
-    let proto_files = find_proto_files(proto_dir);
-
     // collect module names to generate lib.rs
     let mut module_metadata = Vec::new();
     let mut proto_file_str: Vec<PathBuf> = Vec::new();
-    for file in proto_files {
+    for file in find_proto_files(proto_dir) {
         module_metadata.push(get_module_info(&file));
         proto_file_str.push(file);
     }

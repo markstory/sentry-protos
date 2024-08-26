@@ -10,6 +10,7 @@ use regex::Regex;
 #[derive(Clone, Debug)]
 struct ModuleInfo {
     name: String,
+    version: String,
     path: String,
 }
 
@@ -35,17 +36,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut visited: Vec<&str> = vec![];
     let mut lib_rs = String::new();
     for module in module_metadata.iter() {
-        if visited.iter().any(|i| i.contains(&module.name)) {
+        if visited.iter().any(|i| i.contains(&module.path)) {
             continue;
         }
-        visited.push(module.name.as_str());
+        visited.push(module.path.as_str());
 
         // TODO find a better way to generate this code
         lib_rs.push_str("#[path = \"\"]\n");
         lib_rs.push_str(format!("pub mod {} {{\n", module.name).as_ref());
         lib_rs.push_str(format!("    #[path = \"{}.rs\"]\n", module.path).as_ref());
-        // TODO not all packages are v1
-        lib_rs.push_str("    pub mod v1;\n");
+        lib_rs.push_str(format!("    pub mod {};\n", module.version).as_ref());
         lib_rs.push_str("}\n");
         lib_rs.push_str("\n");
     }
@@ -70,8 +70,10 @@ fn get_module_info(path: &PathBuf) -> ModuleInfo {
     };
     let package_name = captures["name"].to_string();
     let mut parts = package_name.split('.');
-    let name = parts.nth_back(1).unwrap().to_string();
 
-    ModuleInfo {name: name, path: package_name}
+    let version = parts.nth_back(0).unwrap().to_string();
+    let name = parts.nth_back(0).unwrap().to_string();
+
+    ModuleInfo {name: name, version: version, path: package_name}
 }
 

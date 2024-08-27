@@ -1,3 +1,17 @@
+## 0.1.13
+
+### Various fixes & improvements
+
+- regenerate rust bindings (466e747d)
+- Refactor the snuba RPC protos (#14) by @colin-sentry
+- Simplify (#13) by @markstory
+- Switch back to tonic_build (#13) by @markstory
+- Add progress output and update Cargo.lock (#13) by @markstory
+- Use prost_build instead (#13) by @markstory
+- Include version packages based on proto files (#13) by @markstory
+- Add codegen steps and buf lint to CI (#12) by @markstory
+- Cleanup generated rust code (fefaa088)
+
 ## 0.1.12
 
 ### Various fixes & improvements

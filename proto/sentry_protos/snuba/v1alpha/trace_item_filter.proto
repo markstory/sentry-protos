@@ -10,7 +10,7 @@ message OrFilter {
   repeated TraceItemFilter filters = 1;
 }
 
-message NumericalFilter {
+message NumberFilter {
   enum Op {
     OP_UNSPECIFIED = 0;
     OP_LESS_THAN = 1;
@@ -48,7 +48,7 @@ message TraceItemFilter {
   oneof value {
     AndFilter and_filter = 1;
     OrFilter or_filter = 2;
-    NumericalFilter number_filter = 3;
+    NumberFilter number_filter = 3;
     StringFilter string_filter = 4;
     ExistsFilter exists_filter = 5;
   }

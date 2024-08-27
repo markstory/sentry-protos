@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package sentry_protos.snuba.v1alpha;
+
+import "sentry_protos/snuba/v1alpha/request_common.proto";
+import "sentry_protos/snuba/v1alpha/trace_item_filter.proto";
+
+message SpanSamplesRequest {
+  message OrderBy {
+    string attr_name = 1;
+    bool descending = 2;
+  }
+
+  RequestMeta meta = 1;
+  repeated TraceItemFilter filters = 2;
+  repeated OrderBy order_by = 3;
+  repeated string requested_attributes = 4;
+  uint32 limit = 5;
+  // required if you want project.name "virtual column" to exist
+  map<string, uint64> project_names_to_ids = 6;
+}
+
+message SpanSample {
+  message Data {
+    oneof value {
+      string str = 1;
+      float num = 2;
+    }
+  }
+  map<string, Data> attributes = 1;
+}
+
+message SpanSamplesResponse {
+  repeated SpanSample span_samples = 1;
+}

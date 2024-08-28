@@ -13,7 +13,7 @@ message SpanSamplesRequest {
   }
 
   RequestMeta meta = 1;
-  repeated TraceItemFilter filter = 2;
+  TraceItemFilter filter = 2;
   repeated OrderBy order_by = 3;
   repeated AttributeKey keys = 4;
   uint32 limit = 5;

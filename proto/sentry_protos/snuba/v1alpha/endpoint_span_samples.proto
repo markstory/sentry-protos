@@ -17,7 +17,7 @@ message SpanSamplesRequest {
   repeated OrderBy order_by = 3;
   repeated AttributeKey keys = 4;
   uint32 limit = 5;
-  //contains context for special columns like project ID, only needs to be included if you are requesting one of those
+  //contains context for special columns like project_name, only needs to be included if you are requesting one of those
   optional AttributeKeyTransformContext attribute_key_transform_context = 6;
 }
 

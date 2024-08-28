@@ -1,3 +1,13 @@
+## 0.1.14
+
+### Various fixes & improvements
+
+- regenerate rust bindings (921c09d2)
+- Fix comparison type (#15) by @colin-sentry
+- fix comment (#15) by @colin-sentry
+- More changes to snuba RPC (#15) by @colin-sentry
+- Cleanup generated rust code (d31957f9)
+
 ## 0.1.13
 
 ### Various fixes & improvements

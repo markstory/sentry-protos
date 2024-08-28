@@ -1,3 +1,11 @@
+## 0.1.15
+
+### Various fixes & improvements
+
+- regenerate rust bindings (258607eb)
+- derp (#16) by @colin-sentry
+- Cleanup generated rust code (0945af1b)
+
 ## 0.1.14
 
 ### Various fixes & improvements

@@ -3,6 +3,7 @@ syntax = "proto3";
 package sentry_protos.snuba.v1alpha;
 
 import "sentry_protos/snuba/v1alpha/request_common.proto";
+import "sentry_protos/snuba/v1alpha/trace_item_attribute.proto";
 import "sentry_protos/snuba/v1alpha/trace_item_filter.proto";
 
 message AggregateBucketRequest {
@@ -21,7 +22,8 @@ message AggregateBucketRequest {
   Function aggregate = 4;
   TraceItemFilter filter = 5;
   uint64 granularity_secs = 6;
-  string metric_name = 7;
+  AttributeKey key = 7;
+  optional AttributeKeyTransformContext attribute_key_transform_context = 8;
 
   //TODO: group by, topn, etc, not necessary for MVP
 }

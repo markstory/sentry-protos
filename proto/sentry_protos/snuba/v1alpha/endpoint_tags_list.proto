@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package sentry_protos.snuba.v1alpha;
+
+import "sentry_protos/snuba/v1alpha/request_common.proto";
+
+//A request for "which tags are available for these projects between these dates" - used for things like autocompletion
+message TagsListRequest {
+  RequestMeta meta = 1;
+  uint32 limit = 2;
+  uint32 offset = 3;
+}
+
+message TagsListResponse {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_STRING = 1;
+    TYPE_NUMBER = 2;
+  }
+
+  message Tag {
+    string name = 1;
+    Type type = 2;
+  }
+  repeated Tag tags = 1;
+}

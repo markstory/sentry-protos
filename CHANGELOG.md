@@ -1,3 +1,11 @@
+## 0.1.16
+
+### Various fixes & improvements
+
+- regenerate rust bindings (df1d3142)
+- feat(eap): add a snuba tags list endpoint (#17) by @colin-sentry
+- Cleanup generated rust code (af63599f)
+
 ## 0.1.15
 
 ### Various fixes & improvements

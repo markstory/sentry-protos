@@ -25,7 +25,7 @@ clean-py:
 # Rust client targets
 .PHONY: build-rust
 build-rust:
-	cargo run -p rustgenerator
+	cd rust && cargo build
 
 .PHONY: clean-rust
 clean-rust:

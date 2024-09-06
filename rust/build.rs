@@ -34,17 +34,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // collect module names to generate lib.rs
     let mut module_metadata = Vec::new();
-    let mut proto_file_str: Vec<PathBuf> = Vec::new();
+    let mut proto_files: Vec<PathBuf> = Vec::new();
     for file in find_proto_files(proto_dir) {
         module_metadata.push(get_module_info(&file));
-        proto_file_str.push(file);
+        proto_files.push(file);
     }
 
     // Compile rust code for all proto files.
     println!("Generating proto bindings");
     tonic_build::configure()
         .emit_rerun_if_changed(false)
-        .compile(&proto_file_str, &["./proto"])
+        .compile(&proto_files, &["./proto"])
         .unwrap();
 
     let mut visited: Vec<&str> = vec![];

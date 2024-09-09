@@ -1,3 +1,9 @@
+## 0.1.19
+
+### Various fixes & improvements
+
+- We don't need a post-release script anymore (199e4673)
+
 ## 0.1.18
 
 ### Various fixes & improvements

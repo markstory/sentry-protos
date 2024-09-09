@@ -1,15 +1,24 @@
 # sentry-protos
 
-An ongoing experiment / demo with using protos and gRPC and sentry.  Currently holds a few demo
-schemas, but is not actively used in production.
+Protocol buffers and gRPC schema for cross-process communication. Contains tooling to generate python and rust client bindings.
 
-https://www.notion.so/sentry/Protobuf-gRPC-schema-registry-7325ddca05dc49a5b05aa317c5dd1641
+📗 [Notion documentation](https://www.notion.so/sentry/Protobuf-gRPC-schema-registry-7325ddca05dc49a5b05aa317c5dd1641)
 
-# Publishing protos
+# Defining schemas
 
-Use the `release` workflow in GitHub actions to create new releases. Each time a release is created, packages will be published for each supported language.
+Message schemas are defined in the `protos` directory. Messages and services are 
+organized by service or product domain and version.
 
-# Unstable protos
+All proto files are required to define a `package` that reflects the filesystem path to the proto file,
+and must end in a version specifier. 
+
+## Backwards compatibility
+
+We use `buf lint` to validate that changes to existing schemas are backwards compatible with
+previously published schemas. If breaking changes are required it is recommended to create a new version
+package instead of trying to ship a potentially breaking change.
+
+## Unstable versions
 
 While features are in development, we occasionally need to break backwards compatibility.
 Any proto packages that end in `alpha`, `beta`, or `test` are exempt from breaking change validation.
@@ -79,5 +88,8 @@ message AttributeKey {
 
 The `Type` enum would be available as `sentry_protos::snuba::v1alpha::attribute_key::Type`. While `AttributeKey` can be imported from `sentry_protos::snuba::v1alpha::AttributeKey`.
 
+# Releasing
+
+Use the `release` workflow in GitHub actions to create new releases. Each time a release is created, packages will be published for each supported language.
 
 

@@ -57,3 +57,27 @@ sentry_protos = "0.1.0"
 [patch.crates-io]
 sentry_protos = { path = "../sentry-protos/rust/" }
 ```
+
+### Rust conventions
+
+Rust code generation applies some naming conventions that you need to keep in mind when consuming generated code.
+
+#### Enums within Messages
+
+Enums that are nested within messages will be hoisted into a namespace matching the snake_case name of the message. For example:
+
+```proto
+// Defined in sentry_protos/snuba/v1alpha/trace_item_attribute.proto
+message AttributeKey {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_BOOLEAN = 1;
+  }
+}
+
+```
+
+The `Type` enum would be available as `sentry_protos::snuba::v1alpha::attribute_key::Type`. While `AttributeKey` can be imported from `sentry_protos::snuba::v1alpha::AttributeKey`.
+
+
+

@@ -1,3 +1,14 @@
+## 0.1.18
+
+### Various fixes & improvements
+
+- Restore top-level cargo.toml (de9ae122)
+- Rename variable (#19) by @markstory
+- Remove release commits. (#19) by @markstory
+- Update build tooling for rust client to use build.rs (#19) by @markstory
+- Remove workspace cargo.toml (#19) by @markstory
+- Cleanup generated rust code (08744b64)
+
 ## 0.1.16
 
 ### Various fixes & improvements

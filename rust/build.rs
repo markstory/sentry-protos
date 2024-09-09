@@ -1,8 +1,6 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use std::fs;
-use std::fs::File;
-use std::io::Write;
 use std::str;
 use glob::glob;
 use regex::Regex;
@@ -49,26 +47,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap();
 
     let mut visited: Vec<&str> = vec![];
-    let mut lib_rs = String::new();
+
+    let mut code = String::new();
+    use std::fmt::Write;
+
     for module in module_metadata.iter() {
         if visited.iter().any(|i| i.contains(&module.path)) {
             continue;
         }
         visited.push(module.path.as_str());
 
-        // TODO find a better way to generate this code
-        lib_rs.push_str(format!("pub mod {} {{\n", module.name).as_ref());
-        lib_rs.push_str(format!("    pub mod {} {{\n", module.version).as_ref());
-        lib_rs.push_str(format!("       tonic::include_proto!(\"{}\");\n", module.path).as_ref());
-        lib_rs.push_str("   }\n");
-        lib_rs.push_str("}\n");
-        lib_rs.push_str("\n");
+        let module_name = &module.name;
+        let module_version = &module.version;
+        let module_path = &module.path;
+        writeln!(code, "pub mod {module_name} {{").unwrap();
+        writeln!(code, "    pub mod {module_version} {{").unwrap();
+        writeln!(code, "       tonic::include_proto!(\"{module_path}\");").unwrap();
+        writeln!(code, "   }}").unwrap();
+        writeln!(code, "}}").unwrap();
+        writeln!(code, "").unwrap();
     }
 
     // Generate lib.rs with the proto modules.
     println!("Generating src/lib.rs");
-    let mut lib_file = File::create("./src/lib.rs").unwrap();
-    lib_file.write_all(lib_rs.as_bytes()).expect("Failed to write lib.rs");
+    std::fs::write(
+        Path::new("./src/lib.rs"),
+        code
+    )
+    .expect("Failed to write lib.rs");
 
     // Once protos are built, layer in client adapters.
     Ok(())

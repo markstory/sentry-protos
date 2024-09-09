@@ -19,6 +19,8 @@ message SpanSamplesRequest {
   uint32 limit = 5;
   //contains context for special columns like project_name, only needs to be included if you are requesting one of those
   optional AttributeKeyTransformContext attribute_key_transform_context = 6;
+  //pre-filters traces that might have relevant spans using the meta tables
+  bool use_experimental_subquery_for_performance = 7;
 }
 
 message SpanSample {

@@ -18,9 +18,14 @@ message AttributeKey {
   string name = 2;
 }
 
-// Special cases for attributes, in particular things like project name
-message AttributeKeyTransformContext {
-  map<uint64, string> project_ids_to_names = 1;
+// custom mappings of column values which are not present in EAP storage
+// for example, project name is changeable by the user and not stored in EAP
+// but sorting by the project name may be desired. This struct carries that mapping
+// data
+message VirtualColumnContext {
+  string from_column_name = 1;
+  string to_column_name = 2;
+  map<string, string> value_map = 3;
 }
 
 message AttributeValue {

@@ -18,6 +18,7 @@ message SpanSamplesRequest {
   repeated AttributeKey keys = 4;
   uint32 limit = 5;
   repeated VirtualColumnContext virtual_column_context = 6;
+  bool use_experimental_subquery_for_performance = 7;
 }
 
 message SpanSample {

@@ -1,4 +1,4 @@
-# sentry-protos
+  # sentry-protos
 
 Protocol buffers and gRPC schema for cross-process communication. Contains tooling to generate python and rust client bindings.
 
@@ -92,4 +92,15 @@ The `Type` enum would be available as `sentry_protos::snuba::v1alpha::attribute_
 
 Use the `release` workflow in GitHub actions to create new releases. Each time a release is created, packages will be published for each supported language.
 
+In this repo, click on Actions:
+
+![image](https://github.com/user-attachments/assets/ce9f638e-5f16-4ff7-9457-d92d2738dc06)
+
+Select `release`
+
+![image](https://github.com/user-attachments/assets/c818995b-fcba-4210-b5a0-8524712315a2)
+
+click `Run Workflow` to create a new release, update version according to [semver guidelines](https://semver.org/)
+
+![image](https://github.com/user-attachments/assets/b2abb910-1d22-428a-811b-1e79d6cbb75d)
 

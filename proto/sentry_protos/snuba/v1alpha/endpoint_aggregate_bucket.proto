@@ -23,7 +23,7 @@ message AggregateBucketRequest {
   TraceItemFilter filter = 5;
   uint64 granularity_secs = 6;
   AttributeKey key = 7;
-  optional AttributeKeyTransformContext attribute_key_transform_context = 8;
+  repeated VirtualColumnContext virtual_column_context = 8;
 
   //TODO: group by, topn, etc, not necessary for MVP
 }

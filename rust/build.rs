@@ -1,8 +1,6 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use std::fs;
-use std::fs::File;
-use std::io::Write;
 use std::str;
 use glob::glob;
 use regex::Regex;
@@ -15,7 +13,7 @@ struct ModuleInfo {
 }
 
 fn find_proto_files(proto_dir: &str) -> impl Iterator<Item = PathBuf> {
-    let proto_pattern = format!("{}/**/*.proto", proto_dir); 
+    let proto_pattern = format!("{}/**/*.proto", proto_dir);
     match glob(&proto_pattern) {
         Ok(iter) => iter
             .map(|item| item.expect("Unable to read file"))
@@ -34,41 +32,49 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // collect module names to generate lib.rs
     let mut module_metadata = Vec::new();
-    let mut proto_file_str: Vec<PathBuf> = Vec::new();
+    let mut proto_files: Vec<PathBuf> = Vec::new();
     for file in find_proto_files(proto_dir) {
         module_metadata.push(get_module_info(&file));
-        proto_file_str.push(file);
+        proto_files.push(file);
     }
 
     // Compile rust code for all proto files.
+    // You can use .out_dir("./src") to generate code into files for local inspection.
     println!("Generating proto bindings");
     tonic_build::configure()
-        .out_dir("./rust/src")
         .emit_rerun_if_changed(false)
-        .compile(&proto_file_str, &["./proto"])
+        .compile(&proto_files, &["./proto"])
         .unwrap();
 
     let mut visited: Vec<&str> = vec![];
-    let mut lib_rs = String::new();
+
+    let mut code = String::new();
+    use std::fmt::Write;
+
     for module in module_metadata.iter() {
         if visited.iter().any(|i| i.contains(&module.path)) {
             continue;
         }
         visited.push(module.path.as_str());
 
-        // TODO find a better way to generate this code
-        lib_rs.push_str("#[path = \"\"]\n");
-        lib_rs.push_str(format!("pub mod {} {{\n", module.name).as_ref());
-        lib_rs.push_str(format!("    #[path = \"{}.rs\"]\n", module.path).as_ref());
-        lib_rs.push_str(format!("    pub mod {};\n", module.version).as_ref());
-        lib_rs.push_str("}\n");
-        lib_rs.push_str("\n");
+        let module_name = &module.name;
+        let module_version = &module.version;
+        let module_path = &module.path;
+        writeln!(code, "pub mod {module_name} {{").unwrap();
+        writeln!(code, "    pub mod {module_version} {{").unwrap();
+        writeln!(code, "       tonic::include_proto!(\"{module_path}\");").unwrap();
+        writeln!(code, "   }}").unwrap();
+        writeln!(code, "}}").unwrap();
+        writeln!(code, "").unwrap();
     }
 
     // Generate lib.rs with the proto modules.
     println!("Generating src/lib.rs");
-    let mut lib_file = File::create("./rust/src/lib.rs").unwrap();
-    lib_file.write_all(lib_rs.as_bytes()).expect("Failed to write lib.rs");
+    std::fs::write(
+        Path::new("./src/lib.rs"),
+        code
+    )
+    .expect("Failed to write lib.rs");
 
     // Once protos are built, layer in client adapters.
     Ok(())
@@ -90,6 +96,6 @@ fn get_module_info(path: &PathBuf) -> ModuleInfo {
     let version = parts.nth_back(0).unwrap().to_string();
     let name = parts.nth_back(0).unwrap().to_string();
 
-    ModuleInfo {name: name, version: version, path: package_name}
+    ModuleInfo {name, version, path: package_name}
 }
 

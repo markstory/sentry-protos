@@ -10,7 +10,6 @@ update-venv:
 build-py:
 	pip install -r requirements.txt
 	python py/generate.py
-	cat py/sentry_protos/__init__.py
 
 .PHONY: package-py
 package-py: build-py
@@ -25,7 +24,7 @@ clean-py:
 # Rust client targets
 .PHONY: build-rust
 build-rust:
-	cargo run -p rustgenerator
+	cd rust && cargo build
 
 .PHONY: clean-rust
 clean-rust:

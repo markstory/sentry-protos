@@ -10,7 +10,6 @@ update-venv:
 build-py:
 	pip install -r requirements.txt
 	python py/generate.py
-	cat py/sentry_protos/__init__.py
 
 .PHONY: package-py
 package-py: build-py

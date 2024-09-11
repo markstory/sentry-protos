@@ -17,7 +17,7 @@ message SpanSamplesRequest {
   repeated OrderBy order_by = 3;
   repeated AttributeKey keys = 4;
   uint32 limit = 5;
-  repeated VirtualColumnContext virtual_column_context = 6;
+  repeated VirtualColumnContext virtual_column_contexts = 6;
 }
 
 message SpanSample {

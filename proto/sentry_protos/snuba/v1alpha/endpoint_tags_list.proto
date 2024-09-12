@@ -10,7 +10,6 @@ message TraceItemAttributesRequest {
   RequestMeta meta = 1;
   uint32 limit = 2;
   uint32 offset = 3;
-  string trace_item_name = 4;
   AttributeKey.Type type = 5;
 }
 
@@ -24,7 +23,6 @@ message TraceItemAttributesResponse {
 
 message AttributeValuesRequest {
   RequestMeta meta = 1;
-  string trace_item_name = 2;
   string name = 3;
   uint32 limit = 4;
   uint32 offset = 5;

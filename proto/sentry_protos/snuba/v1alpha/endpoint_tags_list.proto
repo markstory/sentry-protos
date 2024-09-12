@@ -24,8 +24,11 @@ message TraceItemAttributesResponse {
 message AttributeValuesRequest {
   RequestMeta meta = 1;
   string name = 3;
-  uint32 limit = 4;
-  uint32 offset = 5;
+  // a substring of the value being searched,
+  // only strict substring supported, no regex
+  string value_substring_match = 4;
+  uint32 limit = 5;
+  uint32 offset = 6;
 }
 
 message AttributeValuesResponse {

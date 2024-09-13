@@ -6,7 +6,7 @@ import "sentry_protos/snuba/v1/request_common.proto";
 import "sentry_protos/snuba/v1/trace_item_attribute.proto";
 import "sentry_protos/snuba/v1/trace_item_filter.proto";
 
-message SpanSamplesRequest {
+message TraceItemColumnsRequest {
   message OrderBy {
     AttributeKey key = 1;
     bool descending = 2;
@@ -17,13 +17,16 @@ message SpanSamplesRequest {
   repeated OrderBy order_by = 3;
   repeated AttributeKey keys = 4;
   uint32 limit = 5;
-  repeated VirtualColumnContext virtual_column_contexts = 6;
+  string page_token = 6;
+  repeated VirtualColumnContext virtual_column_contexts = 7;
 }
 
-message SpanSample {
-  map<string, AttributeValue> results = 1;
+message TraceItemColumnValues {
+  string attribute_name = 1;
+  repeated AttributeValue results = 2;
 }
 
-message SpanSamplesResponse {
-  repeated SpanSample span_samples = 1;
+message TraceItemColumnsResponse {
+  repeated TraceItemColumnValues column_values = 1;
+  string page_token = 2;
 }

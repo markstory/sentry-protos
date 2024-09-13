@@ -28,9 +28,10 @@ message AttributeValuesRequest {
   // only strict substring supported, no regex
   string value_substring_match = 4;
   uint32 limit = 5;
-  uint32 offset = 6;
+  string page_token = 6;
 }
 
 message AttributeValuesResponse {
   repeated string values = 1;
+  string page_token = 6;
 }

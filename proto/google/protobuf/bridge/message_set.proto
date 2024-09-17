@@ -63,9 +63,9 @@ syntax = "proto2";
 
 package google.protobuf.bridge;
 
-option cc_enable_arenas = true;
-option java_multiple_files = true;
 option java_outer_classname = "MessageSetProtos";
+option java_multiple_files = true;
+option cc_enable_arenas = true;
 option objc_class_prefix = "GPB";
 
 // This is proto2's version of MessageSet.

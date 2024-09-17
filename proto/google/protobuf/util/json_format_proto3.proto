@@ -14,11 +14,11 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/unittest.proto";
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/unittest.proto";
 
-option java_outer_classname = "JsonFormatProto3";
 option java_package = "com.google.protobuf.util";
+option java_outer_classname = "JsonFormatProto3";
 
 enum EnumType {
   FOO = 0;
@@ -182,7 +182,8 @@ message TestEvilJson {
   int32 regular_value = 1 [json_name = "regular_name"];
   int32 script = 2 [json_name = "</script>"];
   int32 quotes = 3 [json_name = "unbalanced\"quotes"];
-  int32 script_and_quotes = 4 [json_name = "\"<script>alert('hello!);</script>"];
+  int32 script_and_quotes = 4
+      [json_name = "\"<script>alert('hello!);</script>"];
 }
 
 message TestExtensions {

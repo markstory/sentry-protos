@@ -30,7 +30,7 @@ build-rust:
 clean-rust:
 	cd rust && cargo clean
 
-repodir := $(dir $($(abspath $(lastword $(MAKEFILE_LIST)))))
+repodir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 .PHONY: update-vendor
 update-vendor:
 	cd $$(mktemp -d) && \
@@ -39,6 +39,8 @@ update-vendor:
 		cd protobuf && git sparse-checkout set --no-cone src/google/protobuf && \
 		git checkout && rm -rf .git && \
 		find . '(' ! -name '*.proto' -a ! -name '*.md' ')' -delete && \
+		find . -name '*unittest*' -delete && \
+	        rm -rf src/google/protobuf/compiler && \
 		find . && \
 		rm -rf $(repodir)proto/google && \
 		mv src/google $(repodir)proto/

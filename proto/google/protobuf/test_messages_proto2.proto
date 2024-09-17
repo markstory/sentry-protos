@@ -16,11 +16,14 @@ syntax = "proto2";
 
 package protobuf_test_messages.proto2;
 
-option cc_enable_arenas = true;
 option java_package = "com.google.protobuf_test_messages.proto2";
 option objc_class_prefix = "Proto2";
+
 // This is the default, but we specify it here explicitly.
 option optimize_for = SPEED;
+
+option cc_enable_arenas = true;
+
 
 // This proto includes every type of field in both singular and repeated
 // forms.
@@ -39,7 +42,7 @@ message TestAllTypesProto2 {
     FOO = 0;
     BAR = 1;
     BAZ = 2;
-    NEG = -1; // Intentionally negative.
+    NEG = -1;  // Intentionally negative.
   }
 
   // Singular
@@ -300,7 +303,7 @@ message TestAllRequiredTypesProto2 {
     FOO = 0;
     BAR = 1;
     BAZ = 2;
-    NEG = -1; // Intentionally negative.
+    NEG = -1;  // Intentionally negative.
   }
 
   // Singular

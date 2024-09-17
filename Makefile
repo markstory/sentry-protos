@@ -30,5 +30,21 @@ build-rust:
 clean-rust:
 	cd rust && cargo clean
 
+repodir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+.PHONY: update-vendor
+update-vendor:
+	cd $$(mktemp -d) && \
+		git clone -n --depth=1 --filter=tree:0 \
+		    https://github.com/protocolbuffers/protobuf && \
+		cd protobuf && git sparse-checkout set --no-cone src/google/protobuf && \
+		git checkout && rm -rf .git && \
+		find . '(' ! -name '*.proto' -a ! -name '*.md' ')' -delete && \
+			find . -name '*unittest*' -delete && \
+			find . -name 'test_*' -delete && \
+	        rm -rf src/google/protobuf/compiler && \
+		find . && \
+		rm -rf $(repodir)proto/google && \
+		mv src/google $(repodir)proto/
+
 .PHONY: build
 build: build-py build-rust

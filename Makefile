@@ -39,7 +39,8 @@ update-vendor:
 		cd protobuf && git sparse-checkout set --no-cone src/google/protobuf && \
 		git checkout && rm -rf .git && \
 		find . '(' ! -name '*.proto' -a ! -name '*.md' ')' -delete && \
-		find . -name '*unittest*' -delete && \
+			find . -name '*unittest*' -delete && \
+			find . -name 'test_*' -delete && \
 	        rm -rf src/google/protobuf/compiler && \
 		find . && \
 		rm -rf $(repodir)proto/google && \

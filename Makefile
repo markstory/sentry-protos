@@ -40,6 +40,7 @@ update-vendor:
 		git checkout && rm -rf .git && \
 		find . '(' ! -name '*.proto' -a ! -name '*.md' ')' -delete && \
 		find . -name '*unittest*' -delete && \
+	        rm -rf src/google/protobuf/compiler && \
 		find . && \
 		rm -rf $(repodir)proto/google && \
 		mv src/google $(repodir)proto/

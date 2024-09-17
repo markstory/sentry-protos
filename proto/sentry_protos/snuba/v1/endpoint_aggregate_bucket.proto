@@ -19,13 +19,11 @@ enum Function {
 
 message AggregateBucketRequest {
   RequestMeta meta = 1;
-
   TraceItemFilter filter = 2;
   repeated AttributeAggregation aggregations = 3;
   uint64 granularity_secs = 4;
   repeated VirtualColumnContext virtual_column_context = 5;
-
-  //TODO: group by, topn, etc, not necessary for MVP
+  repeated AttributeKey group_by = 6;
 }
 
 message AttributeAggregation {

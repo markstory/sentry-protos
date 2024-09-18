@@ -8,7 +8,7 @@ import "sentry_protos/snuba/v1/trace_item_attribute.proto";
 //A request for "which queryable attributes are available for these projects between these dates"
 // - used for things like autocompletion
 // EAP does not make a distinction between data stored as columns on a table vs attributes stored
-// dynamically (e.g. tags, contexts, etc). To the user of the intreface, they are the same
+// dynamically (e.g. tags, contexts, etc). To the user of the interface, they are the same
 message TraceItemAttributesRequest {
   RequestMeta meta = 1;
   uint32 limit = 2;

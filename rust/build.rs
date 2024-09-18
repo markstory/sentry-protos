@@ -4,6 +4,7 @@ use std::fs;
 use std::str;
 use glob::glob;
 use regex::Regex;
+use std::collections::HashMap;
 
 #[derive(Clone, Debug)]
 struct ModuleInfo {
@@ -50,20 +51,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut code = String::new();
     use std::fmt::Write;
+    let mut module_map = HashMap::<&str, Vec<&ModuleInfo>>::new();
+
 
     for module in module_metadata.iter() {
-        if visited.iter().any(|i| i.contains(&module.path)) {
-            continue;
-        }
-        visited.push(module.path.as_str());
+        module_map.entry(&module.name).and_modify(|e| {e.push(module)}).or_insert(vec![module]);
+    }
 
-        let module_name = &module.name;
-        let module_version = &module.version;
-        let module_path = &module.path;
+
+    for (module_name, modules) in module_map.iter() {
         writeln!(code, "pub mod {module_name} {{").unwrap();
-        writeln!(code, "    pub mod {module_version} {{").unwrap();
-        writeln!(code, "       tonic::include_proto!(\"{module_path}\");").unwrap();
-        writeln!(code, "   }}").unwrap();
+        for module in modules.iter() {
+            if visited.iter().any(|i| i.contains(&module.path)) {
+                continue;
+            }
+            visited.push(module.path.as_str());
+            let module_version = &module.version;
+            let module_path = &module.path;
+            writeln!(code, "    pub mod {module_version} {{").unwrap();
+            writeln!(code, "       tonic::include_proto!(\"{module_path}\");").unwrap();
+            writeln!(code, "   }}").unwrap();
+        }
         writeln!(code, "}}").unwrap();
         writeln!(code, "").unwrap();
     }

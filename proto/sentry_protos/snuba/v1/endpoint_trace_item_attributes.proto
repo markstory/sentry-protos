@@ -26,7 +26,7 @@ message TraceItemAttributesResponse {
   repeated Attribute attributes = 1;
 }
 
-// This endpoing only supports string values, it does not make sense
+// This endpoint only supports string values, it does not make sense
 // to get all the possible values of a numerical attribute
 message AttributeValuesRequest {
   RequestMeta meta = 1;

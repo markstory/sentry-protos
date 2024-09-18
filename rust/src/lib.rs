@@ -10,6 +10,12 @@ pub mod options {
    }
 }
 
+pub mod seer {
+    pub mod v1 {
+       tonic::include_proto!("sentry_protos.seer.v1");
+   }
+}
+
 pub mod snuba {
     pub mod v1 {
        tonic::include_proto!("sentry_protos.snuba.v1");
@@ -22,12 +28,6 @@ pub mod snuba {
 pub mod relay {
     pub mod v1 {
        tonic::include_proto!("sentry_protos.relay.v1");
-   }
-}
-
-pub mod seer {
-    pub mod v1 {
-       tonic::include_proto!("sentry_protos.seer.v1");
    }
 }
 

@@ -29,10 +29,10 @@ No, Qu-EAP differes from SnQL in key ways:
 
 1. Qu-EAP does not distinguish between data stored as a column or a tag, TraceItems have attributes and the interface to query them is all the same.
 2. Qu-EAP operations are limited. Currently there are four:
-    a. A timessries request (with a predefined list of possible aggregations)
-    b. A request for attribute values (e.g. populating a table view)
-    c. A request for the list of all searchable attributes (e.g. tag autocompletion)
-    d. A request for possible attribute values (e.g. tag value autocompletion)
+    1. A timessries request (with a predefined list of possible aggregations)
+    2. A request for attribute values (e.g. populating a table view)
+    3. A request for the list of all searchable attributes (e.g. tag autocompletion)
+    4. A request for possible attribute values (e.g. tag value autocompletion)
 3. Qu-EAP queries can be serviced by datastores other than clickhouse as long as they conform to the interfaces outlined in this repo. At time of writing (09-18-2024) no other datastores are being used however this is the whole point of Qu-EAP. To allow that flexibility and change.
 
 

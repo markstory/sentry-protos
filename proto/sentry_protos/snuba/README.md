@@ -39,7 +39,7 @@ No, Qu-EAP differes from SnQL in key ways:
 
 # Conventions
 
-* All endpoint definition are prefixed with `endpoint_`
+* All endpoint definitions are prefixed with `endpoint_`
 * All request payload are suffixed with `Request`
 * All response payloads are suffixed with `Response`
 * All requests must take a `RequestMeta` object

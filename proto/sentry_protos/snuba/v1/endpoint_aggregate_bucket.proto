@@ -33,9 +33,9 @@ message AttributeAggregation {
 
 message TimeSeries {
   string label = 1;
-  // These tags are the names of the attribute keys which
+  // the names of the attribute keys which
   // were in the group by
-  repeated string tags = 2;
+  repeated string attribute_names = 2;
   repeated float data_points = 3;
 }
 

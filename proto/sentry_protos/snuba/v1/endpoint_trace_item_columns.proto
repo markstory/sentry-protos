@@ -17,7 +17,7 @@ message TraceItemColumnsRequest {
   repeated OrderBy order_by = 3;
   repeated AttributeKey keys = 4;
   uint32 limit = 5;
-  string page_token = 6;
+  PageToken page_token = 6;
   repeated VirtualColumnContext virtual_column_contexts = 7;
 }
 
@@ -28,5 +28,5 @@ message TraceItemColumnValues {
 
 message TraceItemColumnsResponse {
   repeated TraceItemColumnValues column_values = 1;
-  string page_token = 2;
+  PageToken page_token = 2;
 }

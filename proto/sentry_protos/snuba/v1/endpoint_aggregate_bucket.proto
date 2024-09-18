@@ -33,7 +33,10 @@ message AttributeAggregation {
 
 message TimeSeries {
   string label = 1;
-  repeated float data_points = 2;
+  // These tags are the names of the attribute keys which
+  // were in the group by
+  repeated string tags = 2;
+  repeated float data_points = 3;
 }
 
 message AggregateBucketResponse {

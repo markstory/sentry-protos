@@ -37,6 +37,9 @@ message TimeSeries {
   // were in the group by
   repeated string attribute_names = 2;
   repeated float data_points = 3;
+  // number of events used to calculate this timeseries
+  uint64 num_events = 4;
+  float avg_sampling_rate = 5;
 }
 
 message AggregateBucketResponse {

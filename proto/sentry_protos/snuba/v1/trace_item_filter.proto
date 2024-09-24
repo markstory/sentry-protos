@@ -12,6 +12,10 @@ message OrFilter {
   repeated TraceItemFilter filters = 1;
 }
 
+message NotFilter {
+  repeated TraceItemFilter filters = 1;
+}
+
 message ComparisonFilter {
   enum Op {
     OP_UNSPECIFIED = 0;
@@ -39,7 +43,8 @@ message TraceItemFilter {
   oneof value {
     AndFilter and_filter = 1;
     OrFilter or_filter = 2;
-    ComparisonFilter comparison_filter = 3;
-    ExistsFilter exists_filter = 4;
+    NotFilter not_filter = 3;
+    ComparisonFilter comparison_filter = 4;
+    ExistsFilter exists_filter = 5;
   }
 }

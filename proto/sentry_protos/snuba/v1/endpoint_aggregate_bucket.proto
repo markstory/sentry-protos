@@ -12,9 +12,13 @@ enum Function {
   FUNCTION_AVERAGE = 2;
   FUNCTION_COUNT = 3;
   FUNCTION_P50 = 4;
-  FUNCTION_P95 = 5;
-  FUNCTION_P99 = 6;
-  FUNCTION_AVG = 7;
+  FUNCTION_P90 = 5;
+  FUNCTION_P95 = 6;
+  FUNCTION_P99 = 7;
+  FUNCTION_AVG = 8;
+  FUNCTION_MAX = 9;
+  FUNCTION_MIN = 10;
+  FUNCTION_UNIQ = 11;
 }
 
 message AggregateBucketRequest {

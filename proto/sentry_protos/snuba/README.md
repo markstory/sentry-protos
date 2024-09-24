@@ -28,8 +28,9 @@ Example:
 No, Qu-EAP differes from SnQL in key ways:
 
 1. Qu-EAP does not distinguish between data stored as a column or a tag, TraceItems have attributes and the interface to query them is all the same.
+    1. Note: attributes sent by sentry are prefixed with `sentry.{attr_name}` to allow users to send custom tags with the same name.
 2. Qu-EAP operations are limited. Currently there are four:
-    1. A timessries request (with a predefined list of possible aggregations)
+    1. A timeseries request (with a predefined list of possible aggregations)
     2. A request for attribute values (e.g. populating a table view)
     3. A request for the list of all searchable attributes (e.g. tag autocompletion)
     4. A request for possible attribute values (e.g. tag value autocompletion)

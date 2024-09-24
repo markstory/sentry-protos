@@ -4,17 +4,18 @@ package sentry_protos.snuba.v1;
 
 message AttributeKey {
   enum Type { //this mostly reflects what types are able to be ingested, see eap_spans consumer for ingest details
-    TYPE_UNSPECIFIED = 0; //called "none" sometimes
-    TYPE_BOOLEAN = 1;
-    TYPE_STRING = 2;
+    TYPE_UNSPECIFIED = 0; // protobuf requirement, do not send this
+    TYPE_STRING = 1;
+    TYPE_BOOLEAN = 2;
     TYPE_FLOAT = 3;
     TYPE_INT = 4; //note: all numbers are stored as float64, so massive integers can be rounded. USE STRING FOR IDS.
   }
 
   Type type = 1;
 
-  //if you use span_id this will route to span.span_id,
-  //if you use derp this will route to attr_{str,num}_{n}['derp']
+  // the name of the trace item attribute, everything that sentry sends by default is prefixed with
+  // `sentry.` to allow users to send attributes of the same name.
+  // Exampe: `sentry.duration`, `sentry.span_id` etc
   string name = 2;
 }
 

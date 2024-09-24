@@ -9,7 +9,7 @@ import "sentry_protos/snuba/v1/trace_item_attribute.proto";
 // - used for things like autocompletion
 // EAP does not make a distinction between data stored as columns on a table vs attributes stored
 // dynamically (e.g. tags, contexts, etc). To the user of the interface, they are the same
-message TraceItemAttributesRequest {
+message TraceItemAttributeNamesRequest {
   RequestMeta meta = 1;
   uint32 limit = 2;
   uint32 offset = 3;
@@ -18,7 +18,7 @@ message TraceItemAttributesRequest {
   AttributeKey.Type type = 5;
 }
 
-message TraceItemAttributesResponse {
+message TraceItemAttributeNamesResponse {
   message Attribute {
     string name = 1;
     AttributeKey.Type type = 2;
@@ -28,7 +28,7 @@ message TraceItemAttributesResponse {
 
 // This endpoint only supports string values, it does not make sense
 // to get all the possible values of a numerical attribute
-message AttributeValuesRequest {
+message TraceItemAttributeValuesRequest {
   RequestMeta meta = 1;
   string name = 3;
   // a substring of the value being searched,
@@ -38,7 +38,7 @@ message AttributeValuesRequest {
   PageToken page_token = 6;
 }
 
-message AttributeValuesResponse {
+message TraceItemAttributeValuesResponse {
   repeated string values = 1;
   PageToken page_token = 6;
 }

@@ -37,9 +37,9 @@ message AttributeAggregation {
 
 message TimeSeries {
   string label = 1;
-  // the names of the attribute keys which
+  // the names and values of the attribute keys which
   // were in the group by
-  repeated string attribute_names = 2;
+  map<string, string> group_by_attributes = 2;
   repeated float data_points = 3;
   // number of events used to calculate this timeseries
   uint64 num_events = 4;

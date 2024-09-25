@@ -7,33 +7,12 @@ import "sentry_protos/snuba/v1/request_common.proto";
 import "sentry_protos/snuba/v1/trace_item_attribute.proto";
 import "sentry_protos/snuba/v1/trace_item_filter.proto";
 
-enum Function {
-  FUNCTION_UNSPECIFIED = 0;
-  FUNCTION_SUM = 1;
-  FUNCTION_AVERAGE = 2;
-  FUNCTION_COUNT = 3;
-  FUNCTION_P50 = 4;
-  FUNCTION_P90 = 5;
-  FUNCTION_P95 = 6;
-  FUNCTION_P99 = 7;
-  FUNCTION_AVG = 8;
-  FUNCTION_MAX = 9;
-  FUNCTION_MIN = 10;
-  FUNCTION_UNIQ = 11;
-}
-
 message TimeSeriesRequest {
   RequestMeta meta = 1;
   TraceItemFilter filter = 2;
   repeated AttributeAggregation aggregations = 3;
   uint64 granularity_secs = 4;
   repeated AttributeKey group_by = 5;
-}
-
-message AttributeAggregation {
-  Function aggregate = 1;
-  AttributeKey key = 2;
-  string label = 3;
 }
 
 message TimeSeries {

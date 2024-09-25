@@ -9,17 +9,26 @@ import "sentry_protos/snuba/v1/trace_item_filter.proto";
 // Serves requests for table views of the data
 message TraceItemTableRequest {
   message OrderBy {
-    AttributeKey key = 1;
+    Column column = 1;
     bool descending = 2;
   }
 
   RequestMeta meta = 1;
-  TraceItemFilter filter = 2;
-  repeated OrderBy order_by = 3;
-  repeated AttributeKey keys = 4;
-  uint32 limit = 5;
-  PageToken page_token = 6;
-  repeated VirtualColumnContext virtual_column_contexts = 7;
+  repeated Column columns = 2;
+  TraceItemFilter filter = 3;
+  repeated OrderBy order_by = 4;
+  repeated AttributeKey group_by = 5;
+  uint32 limit = 6;
+  PageToken page_token = 7;
+  repeated VirtualColumnContext virtual_column_contexts = 8;
+}
+
+message Column {
+  oneof column {
+    AttributeKey key = 1;
+    AttributeAggregation aggregation = 2;
+  }
+  string label = 3;
 }
 
 message TraceItemColumnValues {

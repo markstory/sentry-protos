@@ -6,7 +6,8 @@ import "sentry_protos/snuba/v1/request_common.proto";
 import "sentry_protos/snuba/v1/trace_item_attribute.proto";
 import "sentry_protos/snuba/v1/trace_item_filter.proto";
 
-message TraceItemColumnsRequest {
+// Serves requests for table views of the data
+message TraceItemTableRequest {
   message OrderBy {
     AttributeKey key = 1;
     bool descending = 2;
@@ -26,7 +27,7 @@ message TraceItemColumnValues {
   repeated AttributeValue results = 2;
 }
 
-message TraceItemColumnsResponse {
+message TraceItemTableResponse {
   repeated TraceItemColumnValues column_values = 1;
   PageToken page_token = 2;
 }

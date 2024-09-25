@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package sentry_protos.snuba.v1;
 
+import "google/protobuf/timestamp.proto";
 import "sentry_protos/snuba/v1/request_common.proto";
 import "sentry_protos/snuba/v1/trace_item_attribute.proto";
 import "sentry_protos/snuba/v1/trace_item_filter.proto";
@@ -40,10 +41,12 @@ message TimeSeries {
   // the names and values of the attribute keys which
   // were in the group by
   map<string, string> group_by_attributes = 2;
-  repeated float data_points = 3;
+  // time bucket for each data point in the timeseries
+  repeated google.protobuf.Timestamp buckets = 3;
+  repeated float data_points = 4;
   // number of events used to calculate this timeseries
-  uint64 num_events = 4;
-  float avg_sampling_rate = 5;
+  uint64 num_events = 5;
+  float avg_sampling_rate = 6;
 }
 
 message TimeSeriesResponse {

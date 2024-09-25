@@ -29,6 +29,14 @@ message VirtualColumnContext {
   map<string, string> value_map = 3;
 }
 
+message StrArray {
+  repeated string values = 1;
+}
+
+message IntArray {
+  repeated int64 values = 1;
+}
+
 message AttributeValue {
   oneof value {
     bool val_bool = 1;
@@ -37,5 +45,7 @@ message AttributeValue {
     int64 val_int = 4;
     // set to true if value is null
     bool val_null = 5;
+    StrArray val_str_array = 6;
+    IntArray val_int_array = 7;
   }
 }

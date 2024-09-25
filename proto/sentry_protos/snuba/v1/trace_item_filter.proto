@@ -27,6 +27,8 @@ message ComparisonFilter {
     OP_NOT_EQUALS = 6;
     OP_LIKE = 7; //string only
     OP_NOT_LIKE = 8; //string only
+    OP_IN = 9; // array only
+    OP_NOT_IN = 10; // array only
   }
   AttributeKey key = 1;
   Op op = 2;

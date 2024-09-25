@@ -16,6 +16,7 @@ message TraceItemAttributeNamesRequest {
   // different typed attributes are queried separately
   // anything other than TYPE_STRING and TYPE_FLOAT will return empty
   AttributeKey.Type type = 5;
+  string value_substring_match = 6;
 }
 
 message TraceItemAttributeNamesResponse {

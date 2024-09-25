@@ -46,6 +46,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Ok(v) => v == "1",
         Err(_) => false,
     };
+    let mut build_mode = "stable";
+    if build_unstable {
+        build_mode = "unstable";
+    }
+    println!("Building {build_mode} protos");
 
     // collect module names to generate lib.rs
     let mut module_metadata = Vec::new();

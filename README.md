@@ -47,7 +47,7 @@ Then in your application install the python bindings with pip.
 
 ```shell
 # CWD is in your python application
-pip install -e ../sentry-protos/py
+pip install -e ../sentry-protos/py --config-settings editable_mode=strict
 ```
 
 As you make changes to proto files, you will need to regenerate bindings with `make build-py`.

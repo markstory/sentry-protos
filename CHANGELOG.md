@@ -1,3 +1,26 @@
+## 0.1.22
+
+### Various fixes & improvements
+
+- chore(docs) Improve local development setup (#32) by @markstory
+- allow building multiple versions (#31) by @volokluev
+- Drop even more files (#29) by @corps
+- More filtering (#29) by @corps
+- Improving vendor by filtering unittest files (#29) by @corps
+- Adds seer summary endpoints (#30) by @corps
+- Support vendored google protobuf sources. Generated files are distributed with protobuf libraries, so they do not need to be built even if they are referenced. (#29) by @corps
+- add value substring (#25) by @volokluev
+- save request_common.proto (#25) by @volokluev
+- move trace item name to meta, add enum (#25) by @volokluev
+- add trace_item_name to payload (#25) by @volokluev
+- separate value types in endpoint (#25) by @volokluev
+- pluralize virtual column contexts (#24) by @volokluev
+- Create CODEOWNERS (a4a5b3fb) by @volokluev
+- Revert "chore: add an experimental flag to spansamples endpoint to use subquery" (#22) by @colin-sentry
+- Make release instructions more clear (01faca9c) by @volokluev
+- release: 0.1.20 (6b40d796) by @getsentry-bot
+- chore: add an experimental flag to spansamples endpoint to use subquery (#20) by @colin-sentry
+
 ## 0.1.20
 
 - No documented changes.

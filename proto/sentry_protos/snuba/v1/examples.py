@@ -1,21 +1,41 @@
 from datetime import datetime
+
+from google.protobuf.timestamp_pb2 import Timestamp
 from sentry_protos.snuba.v1.endpoint_time_series_pb2 import (
-    TimeSeriesRequest,
-    AttributeAggregation,
     TimeSeries,
+    TimeSeriesRequest,
     TimeSeriesResponse,
-    Function,
 )
-from sentry_protos.snuba.v1.trace_item_attribute_pb2 import AttributeKey, AttributeValue
 from sentry_protos.snuba.v1.endpoint_trace_item_attributes_pb2 import (
     TraceItemAttributeNamesRequest,
     TraceItemAttributeNamesResponse,
     TraceItemAttributeValuesRequest,
     TraceItemAttributeValuesResponse,
 )
-from sentry_protos.snuba.v1.request_common_pb2 import RequestMeta, TraceItemName
-from google.protobuf.timestamp_pb2 import Timestamp
-
+from sentry_protos.snuba.v1.endpoint_trace_item_table_pb2 import (
+    Column,
+    TraceItemColumnValues,
+    TraceItemTableRequest,
+    TraceItemTableResponse,
+)
+from sentry_protos.snuba.v1.request_common_pb2 import (
+    RequestMeta,
+    TraceItemName,
+    PageToken,
+)
+from sentry_protos.snuba.v1.trace_item_filter_pb2 import (
+    TraceItemFilter,
+    ComparisonFilter,
+    ExistsFilter,
+    AndFilter,
+    OrFilter,
+)
+from sentry_protos.snuba.v1.trace_item_attribute_pb2 import (
+    AttributeAggregation,
+    AttributeKey,
+    AttributeValue,
+    Function,
+)
 
 COMMON_META = RequestMeta(
     project_ids=[1, 2, 3],
@@ -97,4 +117,82 @@ def test_example_time_series():
                 avg_sampling_rate=0.1,
             ),
         ]
+    )
+
+
+def test_example_table() -> None:
+    TraceItemTableRequest(
+        meta=COMMON_META,
+        columns=[
+            Column(
+                key=AttributeKey(
+                    type=AttributeKey.TYPE_STRING, name="sentry.span_name"
+                ),
+                label="span_name",
+            ),
+            Column(
+                key=AttributeKey(type=AttributeKey.TYPE_FLOAT, name="sentry.duration"),
+                label="duration",
+            ),
+        ],
+        filter=TraceItemFilter(
+            or_filter=OrFilter(
+                filters=[
+                    TraceItemFilter(
+                        comparison_filter=ComparisonFilter(
+                            key=AttributeKey(
+                                type=AttributeKey.TYPE_STRING,
+                                name="eap.measurement",
+                            ),
+                            op=ComparisonFilter.OP_LESS_THAN_OR_EQUALS,
+                            value=AttributeValue(val_float=101),
+                        ),
+                    ),
+                    TraceItemFilter(
+                        comparison_filter=ComparisonFilter(
+                            key=AttributeKey(
+                                type=AttributeKey.TYPE_STRING,
+                                name="eap.measurement",
+                            ),
+                            op=ComparisonFilter.OP_GREATER_THAN,
+                            value=AttributeValue(val_float=999),
+                        ),
+                    ),
+                ]
+            )
+        ),
+        order_by=[
+            TraceItemTableRequest.OrderBy(
+                column=Column(
+                    key=AttributeKey(
+                        type=AttributeKey.TYPE_FLOAT, name="sentry.duration"
+                    )
+                )
+            )
+        ],
+        limit=100,
+    )
+
+    TraceItemTableResponse(
+        column_values=[
+            TraceItemColumnValues(
+                attribute_name="span_name",
+                results=[AttributeValue(val_str="xyz"), AttributeValue(val_str="abc")],
+            ),
+            TraceItemColumnValues(
+                attribute_name="duration",
+                results=[AttributeValue(val_float=4.2), AttributeValue(val_float=6.9)],
+            ),
+        ],
+        page_token=PageToken(
+            filter_offset=TraceItemFilter(
+                comparison_filter=ComparisonFilter(
+                    key=AttributeKey(
+                        type=AttributeKey.TYPE_FLOAT, name="sentry.duration"
+                    ),
+                    op=ComparisonFilter.OP_GREATER_THAN_OR_EQUALS,
+                    value=AttributeValue(val_float=6.9),
+                )
+            )
+        ),
     )

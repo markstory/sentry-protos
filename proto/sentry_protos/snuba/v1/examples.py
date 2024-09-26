@@ -196,3 +196,70 @@ def test_example_table() -> None:
             )
         ),
     )
+
+
+def test_example_table_with_aggregations() -> None:
+    TraceItemTableRequest(
+        meta=COMMON_META,
+        columns=[
+            Column(
+                key=AttributeKey(
+                    type=AttributeKey.TYPE_STRING, name="sentry.span_name"
+                ),
+                label="span_name",
+            ),
+            Column(
+                aggregation=AttributeAggregation(
+                    aggregate=Function.FUNCTION_P95,
+                    key=AttributeKey(
+                        type=AttributeKey.TYPE_FLOAT, name="sentry.duration"
+                    ),
+                ),
+                label="duration_p95",
+            ),
+        ],
+        filter=TraceItemFilter(
+            or_filter=OrFilter(
+                filters=[
+                    TraceItemFilter(
+                        comparison_filter=ComparisonFilter(
+                            key=AttributeKey(
+                                type=AttributeKey.TYPE_STRING,
+                                name="eap.measurement",
+                            ),
+                            op=ComparisonFilter.OP_LESS_THAN_OR_EQUALS,
+                            value=AttributeValue(val_float=101),
+                        ),
+                    ),
+                    TraceItemFilter(
+                        comparison_filter=ComparisonFilter(
+                            key=AttributeKey(
+                                type=AttributeKey.TYPE_STRING,
+                                name="eap.measurement",
+                            ),
+                            op=ComparisonFilter.OP_GREATER_THAN,
+                            value=AttributeValue(val_float=999),
+                        ),
+                    ),
+                ]
+            )
+        ),
+        order_by=[TraceItemTableRequest.OrderBy(column=Column(label="duration_p95"))],
+        limit=2,
+    )
+
+    TraceItemTableResponse(
+        column_values=[
+            TraceItemColumnValues(
+                attribute_name="span_name",
+                results=[AttributeValue(val_str="xyz"), AttributeValue(val_str="abc")],
+            ),
+            TraceItemColumnValues(
+                attribute_name="duration_p95",
+                results=[AttributeValue(val_float=4.2), AttributeValue(val_float=6.9)],
+            ),
+        ],
+        page_token=PageToken(
+            offset=2
+        ),  # if we're ordering by aggregate values, we can't paginate by anything except offset
+    )

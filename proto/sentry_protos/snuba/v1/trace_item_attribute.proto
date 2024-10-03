@@ -65,8 +65,15 @@ enum Function {
   FUNCTION_UNIQ = 11;
 }
 
+enum ExtrapolationMode {
+  EXTRAPOLATION_MODE_UNSPECIFIED = 0;
+  EXTRAPOLATION_MODE_NONE = 1;
+  EXTRAPOLATION_MODE_SAMPLE_WEIGHTED = 2;
+}
+
 message AttributeAggregation {
   Function aggregate = 1;
   AttributeKey key = 2;
   string label = 3;
+  ExtrapolationMode extrapolation_mode = 4;
 }
